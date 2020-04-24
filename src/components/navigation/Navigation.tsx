@@ -14,15 +14,18 @@ const NavContainer = styled.nav`
     display: flex;
     height: 60px;
     box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+    background-color: ${({ theme }) => theme.white};
+    width: 100%;
+    z-index: 50;
+    position: fixed;
 `;
 
 const NavContent = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0px 25px;
     margin: 0px auto;
-    width: 1375px;
+    width: 1310px;
     position: relative;
 `;
 

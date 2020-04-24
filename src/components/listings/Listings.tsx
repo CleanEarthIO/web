@@ -13,7 +13,7 @@ const ListingContainer = styled.div`
 `;
 
 const ListingCard = styled.div`
-    height: 450px;
+    height: 350px;
 `;
 
 const ListingThumbnail = styled.img`
@@ -85,9 +85,11 @@ const ListingButton = styled.button`
     }
 `;
 
-export function Listings(): JSX.Element {
-    return (
-        <ListingContainer>
+function ListingTest(): JSX.Element[] {
+    const test_cards = [];
+
+    for (let i = 0; i < 25; i += 1) {
+        test_cards.push(
             <ListingCard>
                 <ListingThumbnail src={testimg} />
                 <ListingDetails>
@@ -117,7 +119,12 @@ export function Listings(): JSX.Element {
                     <ListingButton>Attend</ListingButton>
                 </ListingDetails>
             </ListingCard>
-        </ListingContainer>
-    );
+        );
+    }
+    return test_cards;
+}
+
+export function Listings(): JSX.Element {
+    return <ListingContainer>{ListingTest()}</ListingContainer>;
 }
 

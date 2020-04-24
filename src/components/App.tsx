@@ -16,7 +16,9 @@ export function App(): JSX.Element {
                 to have the styles applied */}
                 <GlobalStyle />
                 <Navigation />
-                <BaseRouter />
+                <div style={{ paddingTop: '60px' }}>
+                    <BaseRouter />
+                </div>
             </ThemeProvider>
         </Router>
     );
