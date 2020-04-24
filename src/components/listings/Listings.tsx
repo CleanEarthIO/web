@@ -23,8 +23,8 @@ const ListingThumbnail = styled.img`
     object-fit: cover;
 `;
 
-const SmlHorDivider = styled.div`
-    height: 20px;
+const SmlVerDivider = styled.div`
+    height: 23px;
     width: 1px;
     background-color: ${({ theme }) => theme.gray300};
     align-self: center;
@@ -90,7 +90,7 @@ function ListingTest(): JSX.Element[] {
 
     for (let i = 0; i < 25; i += 1) {
         test_cards.push(
-            <ListingCard>
+            <ListingCard key={i}>
                 <ListingThumbnail src={testimg} />
                 <ListingDetails>
                     <h1>Sample text</h1>
@@ -102,17 +102,17 @@ function ListingTest(): JSX.Element[] {
                     <div>
                         <p>
                             <FaRegCalendarAlt />
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <span style={{ display: 'flex', flexDirection: 'column' }}>
                                 <span>Cleanup Date</span>
                                 0/00/00
-                            </div>
+                            </span>
                         </p>
-                        <SmlHorDivider />
+                        <SmlVerDivider />
                         <p>
                             <FaUsers style={{ fontSize: '19px' }} />
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <span style={{ display: 'flex', flexDirection: 'column' }}>
                                 <span>Attendees</span>0
-                            </div>
+                            </span>
                         </p>
                     </div>
                     <ItemDivider />

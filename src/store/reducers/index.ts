@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
+import { AuthReducer } from './reducerAuth';
+import { AuthUserModel } from '../interfaces/interfaceAuth';
 
 export interface StoreState {
-    placeholder: number;
+    AuthReducer: AuthUserModel;
 }
 
 export const reducers = combineReducers<StoreState>({
-    placeholder: () => 1,
+    AuthReducer,
 });
