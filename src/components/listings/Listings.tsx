@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaMapMarkerAlt, FaRegCalendarAlt, FaUsers } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaRegCalendarAlt, FaUsers, FaUserAlt } from 'react-icons/fa';
 
 import testimg from '../../assets/images/testimg.jpg';
 import { ItemDivider } from '../globalUI/GlobalUI';
@@ -115,6 +115,9 @@ function ListingTest(): JSX.Element[] {
                             </span>
                         </p>
                     </div>
+                    <p style={{ marginBottom: '9px' }}>
+                        <FaUserAlt /> Organized by:
+                    </p>
                     <ItemDivider />
                     <ListingButton>Attend</ListingButton>
                 </ListingDetails>
