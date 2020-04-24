@@ -1,7 +1,7 @@
 // Theme color for the sites
 export const theme = {
-    primary: '#6b7cff',
-    darkPrimary: '#5f71f9',
+    primary: '#48B8E0',
+    darkPrimary: '#379cc0',
     white: '#fff',
     shadow: '#e4e4e4',
     gray200: '#f3f3f3',
