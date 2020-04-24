@@ -14,7 +14,6 @@ const NavContainer = styled.nav`
     display: flex;
     height: 60px;
     box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
-    margin-bottom: 35px;
 `;
 
 const NavContent = styled.div`
@@ -77,7 +76,7 @@ const StyledNavLink = styled(NavLink).attrs({
     color: ${(props) => props.theme.gray800};
     font-weight: 600;
     letter-spacing: 0.5px;
-    padding: 22px 15px;
+    padding: 21px 15px;
     text-decoration: none;
     border-bottom: 2px solid transparent;
     margin-right: 8px;

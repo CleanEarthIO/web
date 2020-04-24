@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { FaUserAlt, FaPowerOff, FaChevronDown } from 'react-icons/fa';
 
 import { device } from '../../utils/theme';
+import { ItemDivider } from '../globalUI/GlobalUI';
 
 interface StyleProps {
     arrowActive?: boolean;
@@ -59,11 +60,6 @@ const DropdownIcon = styled(FaChevronDown)`
     }
 `;
 
-// const AccountIcons = styled(Icon)`
-//     display: flex;
-//     margin-right: 8px;
-// `;
-
 const ProfileList = styled.ul`
     z-index: 10;
     top: 49px;
@@ -77,11 +73,6 @@ const ProfileList = styled.ul`
     font-weight: bold;
     background-color: white;
     box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.2);
-`;
-
-const ItemDivider = styled.div`
-    margin: 2px 0px;
-    border-bottom: 2px solid ${({ theme }) => theme.divider};
 `;
 
 const ListItemLink = styled(Link)`
