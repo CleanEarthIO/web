@@ -4,6 +4,12 @@ import { FaMapMarkerAlt, FaRegCalendarAlt, FaUsers, FaUserAlt } from 'react-icon
 
 import testimg from '../../assets/images/testimg.jpg';
 import { ItemDivider } from '../globalUI/GlobalUI';
+import { ThemeInterface } from '../../utils/theme';
+
+interface StyleProps {
+    subTitle?: boolean;
+    theme: ThemeInterface;
+}
 
 const ListingContainer = styled.div`
     margin: 30px 15px;
@@ -61,7 +67,7 @@ const ListingDetails = styled.div`
 
         span {
             font-size: 12px;
-            color: ${({ theme }) => theme.gray450};
+            color: ${({ theme }) => theme.gray500};
         }
     }
 
@@ -69,6 +75,11 @@ const ListingDetails = styled.div`
         display: flex;
         margin-bottom: 5px;
     }
+`;
+
+const ListingSubTitle = styled.span`
+    font-size: 12px;
+    color: ${({ theme }) => theme.gray450} !important;
 `;
 
 const ListingButton = styled.button`
@@ -103,7 +114,7 @@ function ListingTest(): JSX.Element[] {
                         <p>
                             <FaRegCalendarAlt />
                             <span style={{ display: 'flex', flexDirection: 'column' }}>
-                                <span>Cleanup Date</span>
+                                <ListingSubTitle>Cleanup Date</ListingSubTitle>
                                 0/00/00
                             </span>
                         </p>
@@ -111,7 +122,7 @@ function ListingTest(): JSX.Element[] {
                         <p>
                             <FaUsers style={{ fontSize: '19px' }} />
                             <span style={{ display: 'flex', flexDirection: 'column' }}>
-                                <span>Attendees</span>0
+                                <ListingSubTitle>Attendees</ListingSubTitle>0
                             </span>
                         </p>
                     </div>

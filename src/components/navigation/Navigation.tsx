@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import cleanseSmall from '../../assets/images/cleanseSmall.png';
 import { AccountDropdown } from './AccountDropdown';
+import cleanseup from '../../apis/cleanseup';
 
 interface StyleProps {
     moveRight?: boolean;
@@ -73,25 +74,47 @@ const NavImg = styled.img`
 `;
 
 const activeClassName = 'active';
-const StyledNavLink = styled(NavLink).attrs({
-    activeClassName,
-})`
-    color: ${(props) => props.theme.gray800};
+const StyledPoperties = `
     font-weight: 600;
     letter-spacing: 0.5px;
     padding: 21px 15px;
     text-decoration: none;
     border-bottom: 2px solid transparent;
     margin-right: 8px;
+    font-size: 14px;
     &:hover {
-        color: ${(props) => props.theme.primary};
-        border-bottom: 2px solid ${(props) => props.theme.primary};
+        color: ${(props: any) => props.theme.primary};
+        border-bottom: 2px solid ${(props: any) => props.theme.primary};
     }
     &.${activeClassName} {
-        color: ${(props) => props.theme.gray600};
-        border-bottom: 2px solid ${(props) => props.theme.primary};
+        color: ${(props: any) => props.theme.gray600};
+        border-bottom: 2px solid ${(props: any) => props.theme.primary};
     }
+
 `;
+
+const StyledNavLink = styled(NavLink).attrs({
+    activeClassName,
+})`
+    color: ${(props: any) => props.theme.gray800};
+    ${StyledPoperties}
+`;
+const StyledButton = styled.button`
+    color: ${(props) => props.theme.gray800};
+    background-color: transparent;
+    ${StyledPoperties}
+`;
+
+function handleClick() {
+    cleanseup
+        .get('/login')
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
 
 export function Navigation(): JSX.Element {
     return (
@@ -117,8 +140,8 @@ export function Navigation(): JSX.Element {
                 <NavList moveRight style={{ height: '100%' }}>
                     <NavItem>
                         {/* <AccountDropdown /> */}
-                        <StyledNavLink to='/login'>Login</StyledNavLink>
-                        <StyledNavLink to='/register'>Sign Up</StyledNavLink>
+                        <StyledButton onClick={handleClick}>Login</StyledButton>
+                        <StyledButton>Sign Up</StyledButton>
                     </NavItem>
                 </NavList>
             </NavContent>

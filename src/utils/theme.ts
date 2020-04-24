@@ -1,4 +1,5 @@
 // Theme color for the sites
+export type ThemeInterface = typeof theme;
 export const theme = {
     primary: '#48B8E0',
     darkPrimary: '#379cc0',
