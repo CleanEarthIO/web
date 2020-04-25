@@ -3,13 +3,14 @@ import { Dispatch } from 'redux';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaUserAlt, FaPowerOff, FaChevronDown } from 'react-icons/fa';
+import { FaUserAlt, FaPowerOff, FaChevronDown, FaCog } from 'react-icons/fa';
 
 import { device } from '../../utils/theme';
 import { ItemDivider } from '../globalUI/GlobalUI';
 import { useAuth0 } from '../../apis/react-auth0-spa';
 import { authLogout } from '../../store/actions/actionAuth';
 import { AuthLogoutAction } from '../../store/interfaces/interfaceAuth';
+import { NoAccess } from '../../utils/global-styles';
 
 interface StyleProps {
     arrowactive?: boolean | number;
@@ -142,10 +143,19 @@ export function AccountDropdown() {
 
             {profileDropdown ? (
                 <ProfileList onClick={() => setProfileDropdown(!profileDropdown)}>
-                    <ListItemLink to='/'>
-                        <FaUserAlt />
-                        <ListItem>Profile</ListItem>
-                    </ListItemLink>
+                    <NoAccess>
+                        <ListItemLink to='/'>
+                            <FaUserAlt />
+                            <ListItem>Profile</ListItem>
+                        </ListItemLink>
+                    </NoAccess>
+                    <ItemDivider />
+                    <NoAccess>
+                        <ListItemLink to='/'>
+                            <FaCog />
+                            <ListItem>Settings</ListItem>
+                        </ListItemLink>
+                    </NoAccess>
                     <ItemDivider />
                     <ListItemLink to='/' onClick={() => handleLogout(dispatch, logout)}>
                         <FaPowerOff />

@@ -1,4 +1,6 @@
+import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
+import ReactTooltip from 'react-tooltip';
 import { device } from './theme';
 
 export const GlobalStyle = createGlobalStyle`
@@ -41,6 +43,31 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 // #########################
+// NO ACCESS COMPONENT
+// #########################
+const DisabledContainer = styled.div`
+    cursor: not-allowed;
+`;
+const Disabled = styled.div`
+    opacity: 0.4;
+    pointer-events: none;
+`;
+
+// @ts-ignore
+export function NoAccess({ children }): JSX.Element {
+    return (
+        <>
+            <DisabledContainer>
+                <ReactTooltip />
+                <span data-tip='Coming soon' data-place='left'>
+                    <Disabled>{children}</Disabled>
+                </span>
+            </DisabledContainer>
+        </>
+    );
+}
+
+// #########################
 // RESPONSIVE PROPERTIES
 // #########################
 export const Container = styled.div`
@@ -59,3 +86,4 @@ export const Container = styled.div`
         width: 90%;
     }
 `;
+
