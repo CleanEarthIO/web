@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import cleanseSmall from '../../assets/images/cleanseSmall.png';
 import { AccountDropdown } from './AccountDropdown';
-
 import { useAuth0 } from '../../apis/react-auth0-spa';
+import { StoreState, useSelector } from '../../store/reducers/reducers';
 
 interface StyleProps {
     moveRight?: boolean;
@@ -111,7 +111,11 @@ const StyledButton = styled.button`
 `;
 
 export function Navigation(): JSX.Element {
-    const { isAuthenticated, loginWithRedirect } = useAuth0();
+    const { loginWithRedirect } = useAuth0();
+    const isAuthenticated = useSelector(
+        (state: StoreState) => state.authReducer.isAuthenticated
+    );
+
     return (
         <NavContainer>
             <NavContent>

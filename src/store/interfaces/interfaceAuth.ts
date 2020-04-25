@@ -4,6 +4,7 @@ export interface AuthUserModel {
     readonly user: object;
     readonly loading: boolean;
     readonly errors: object;
+    readonly isAuthenticated: boolean;
 }
 
 export interface Auth0User {
@@ -22,4 +23,9 @@ export interface Auth0User {
 export interface AuthSuccessAction {
     type: AuthTypes.AUTH_SUCCESS;
     payload: Auth0User;
+}
+
+export interface AuthLogoutAction {
+    type: AuthTypes.AUTH_LOGOUT;
+    payload?: null;
 }

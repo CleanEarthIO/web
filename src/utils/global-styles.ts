@@ -12,8 +12,8 @@ export const GlobalStyle = createGlobalStyle`
 
    @font-face {
         font-family: 'SofiaPro';
-        src: url('/fonts/SofaProBold.woff2') format('woff2'),
-            url('/fonts/SofaProBold.woff') format('woff');
+        src: url('/fonts/SofiaProBold.woff2') format('woff2'),
+            url('/fonts/SofiaProBold.woff') format('woff');
         font-weight: 600;
         font-style: normal;
     }

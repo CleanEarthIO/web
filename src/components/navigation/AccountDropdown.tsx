@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Dispatch } from 'redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUserAlt, FaPowerOff, FaChevronDown } from 'react-icons/fa';
@@ -6,9 +8,11 @@ import { FaUserAlt, FaPowerOff, FaChevronDown } from 'react-icons/fa';
 import { device } from '../../utils/theme';
 import { ItemDivider } from '../globalUI/GlobalUI';
 import { useAuth0 } from '../../apis/react-auth0-spa';
+import { authLogout } from '../../store/actions/actionAuth';
+import { AuthLogoutAction } from '../../store/interfaces/interfaceAuth';
 
 interface StyleProps {
-    arrowActive?: boolean;
+    arrowactive?: boolean | number;
 }
 
 const UserDropdown = styled.div`
@@ -54,7 +58,7 @@ const UserProfileText = styled.p`
 const DropdownIcon = styled(FaChevronDown)`
     font-size: 14px;
     margin-left: 8px;
-    transform: rotate(${(props: StyleProps) => (props.arrowActive ? 180 : 0)}deg);
+    transform: rotate(${(props: StyleProps) => (props.arrowactive ? 180 : 0)}deg);
     display: flex !important;
     @media ${device.mobileXS} {
         margin-left: 5px;
@@ -103,8 +107,15 @@ const ProfileContainer = styled.div`
     height: 100%;
 `;
 
+const handleLogout = (dispatch: Dispatch<AuthLogoutAction>, logout: () => void): void => {
+    logout();
+    dispatch(authLogout());
+};
+
 export function AccountDropdown() {
     const { logout } = useAuth0();
+    const dispatch = useDispatch();
+
     // Reference to outer div
     const node = useRef<HTMLDivElement>(null);
     const [profileDropdown, setProfileDropdown] = useState(false);
@@ -125,7 +136,7 @@ export function AccountDropdown() {
             <UserDropdown onClick={() => setProfileDropdown(!profileDropdown)}>
                 <UserProfileBtn>
                     <UserProfileText>Name</UserProfileText>
-                    <DropdownIcon arrowActive={profileDropdown} />
+                    <DropdownIcon arrowactive={profileDropdown ? 1 : 0} />
                 </UserProfileBtn>
             </UserDropdown>
 
@@ -136,7 +147,7 @@ export function AccountDropdown() {
                         <ListItem>Profile</ListItem>
                     </ListItemLink>
                     <ItemDivider />
-                    <ListItemLink to='/' onClick={() => logout()}>
+                    <ListItemLink to='/' onClick={() => handleLogout(dispatch, logout)}>
                         <FaPowerOff />
                         <ListItem>Log Out</ListItem>
                     </ListItemLink>
