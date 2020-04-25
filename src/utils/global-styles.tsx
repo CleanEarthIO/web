@@ -40,6 +40,10 @@ export const GlobalStyle = createGlobalStyle`
         border-top: none;
         border: none;
     }
+
+    .mapboxgl-canvas{
+        width: 100%;
+    }
 `;
 
 // #########################

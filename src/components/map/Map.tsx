@@ -13,6 +13,10 @@ const MapContainer = styled.div`
         width: 100%;
     }
 
+    .mapboxgl-canvas {
+        width: 100%;
+    }
+
     height: 100vh;
 
     @media ${device.tabletM} {

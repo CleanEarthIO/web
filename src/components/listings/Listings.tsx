@@ -15,6 +15,10 @@ const ListingContainer = styled.div`
     display: grid;
     grid-gap: 16px;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+    @media ${device.mobileXS} {
+        margin: 10px;
+    }
 `;
 
 const ListingCard = styled.div`
@@ -78,7 +82,8 @@ const ListingDetails = styled.div`
     }
 
     div {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
         margin-bottom: 5px;
     }
 
@@ -88,6 +93,10 @@ const ListingDetails = styled.div`
 
     @media ${device.tabletL} {
         width: ${({ tOff }: StyleProps) => (tOff ? '255px' : '300px')};
+    }
+
+    @media ${device.mobileXS} {
+        width: ${({ tOff }: StyleProps) => (tOff ? '255px' : '280px')};
     }
 `;
 
@@ -132,17 +141,19 @@ function ListingTest(): JSX.Element[] {
                                 0/00/00
                             </span>
                         </p>
-                        <SmlVerDivider />
                         <p>
                             <FaUsers style={{ fontSize: '19px' }} />
                             <span style={{ display: 'flex', flexDirection: 'column' }}>
                                 <ListingSubTitle>Attendees</ListingSubTitle>0
                             </span>
                         </p>
+                        <p>
+                            <FaUserAlt />
+                            <span style={{ display: 'flex', flexDirection: 'column' }}>
+                                <ListingSubTitle>Created by</ListingSubTitle>Name
+                            </span>
+                        </p>
                     </div>
-                    <p style={{ marginBottom: '9px' }}>
-                        <FaUserAlt /> Organized by:
-                    </p>
                     <ItemDivider />
                     <ListingButton>Attend</ListingButton>
                 </ListingDetails>
@@ -169,17 +180,19 @@ export function SingleListing(): JSX.Element {
                         0/00/00
                     </span>
                 </p>
-                <SmlVerDivider />
                 <p>
                     <FaUsers style={{ fontSize: '19px' }} />
                     <span style={{ display: 'flex', flexDirection: 'column' }}>
                         <ListingSubTitle>Attendees</ListingSubTitle>0
                     </span>
                 </p>
+                <p>
+                    <FaUserAlt />
+                    <span style={{ display: 'flex', flexDirection: 'column' }}>
+                        <ListingSubTitle>Created by</ListingSubTitle>Name
+                    </span>
+                </p>
             </div>
-            <p style={{ marginBottom: '9px' }}>
-                <FaUserAlt /> Organized by:
-            </p>
             <ItemDivider />
             <ListingButton>Attend</ListingButton>
         </ListingDetails>
