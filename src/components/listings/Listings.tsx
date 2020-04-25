@@ -84,7 +84,7 @@ const ListingDetails = styled.div`
     div {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        margin-bottom: 5px;
+        margin-bottom: 9px;
     }
 
     @media ${device.laptopM} {
