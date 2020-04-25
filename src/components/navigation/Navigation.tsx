@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import cleanseSmall from '../../assets/images/cleanseSmall.png';
 import { AccountDropdown } from './AccountDropdown';
-import cleanseup from '../../apis/cleanseup';
+
+import { useAuth0 } from '../../apis/react-auth0-spa';
 
 interface StyleProps {
     moveRight?: boolean;
@@ -82,6 +83,14 @@ const StyledPoperties = `
     border-bottom: 2px solid transparent;
     margin-right: 8px;
     font-size: 14px;
+
+`;
+
+const StyledNavLink = styled(NavLink).attrs({
+    activeClassName,
+})`
+    ${StyledPoperties}
+    color: ${(props: any) => props.theme.gray800};
     &:hover {
         color: ${(props: any) => props.theme.primary};
         border-bottom: 2px solid ${(props: any) => props.theme.primary};
@@ -90,33 +99,19 @@ const StyledPoperties = `
         color: ${(props: any) => props.theme.gray600};
         border-bottom: 2px solid ${(props: any) => props.theme.primary};
     }
-
-`;
-
-const StyledNavLink = styled(NavLink).attrs({
-    activeClassName,
-})`
-    color: ${(props: any) => props.theme.gray800};
-    ${StyledPoperties}
 `;
 const StyledButton = styled.button`
-    color: ${(props) => props.theme.gray800};
-    background-color: transparent;
     ${StyledPoperties}
+    color: ${(props) => props.theme.gray800};
+    cursor: pointer;
+    background-color: transparent;
+    &:hover {
+        color: ${(props: any) => props.theme.primary};
+    }
 `;
 
-function handleClick() {
-    cleanseup
-        .get('/login')
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-}
-
 export function Navigation(): JSX.Element {
+    const { isAuthenticated, loginWithRedirect } = useAuth0();
     return (
         <NavContainer>
             <NavContent>
@@ -139,9 +134,13 @@ export function Navigation(): JSX.Element {
                 </NavRoutes>
                 <NavList moveRight style={{ height: '100%' }}>
                     <NavItem>
-                        {/* <AccountDropdown /> */}
-                        <StyledButton onClick={handleClick}>Login</StyledButton>
-                        <StyledButton>Sign Up</StyledButton>
+                        {isAuthenticated ? (
+                            <AccountDropdown />
+                        ) : (
+                            <StyledButton onClick={() => loginWithRedirect({})}>
+                                Login
+                            </StyledButton>
+                        )}
                     </NavItem>
                 </NavList>
             </NavContent>

@@ -1,7 +1,7 @@
-import { AuthStartAction } from '../interfaces/interfaceAuth';
+import { AuthSuccessAction } from '../interfaces/interfaceAuth';
 
 export enum AuthTypes {
-    AUTH_START,
+    AUTH_SUCCESS,
 }
 
-export type AuthActions = AuthStartAction;
+export type AuthActions = AuthSuccessAction;

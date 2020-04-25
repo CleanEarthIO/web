@@ -10,10 +10,11 @@ const MapContainer = styled.div`
         height: 100%;
         width: 100%;
     }
+
     height: 100vh;
 
     @media ${device.tabletM} {
-        height: 50vh;
+        height: 300px;
     }
 `;
 

@@ -35,7 +35,7 @@ const SmlVerDivider = styled.div`
     width: 1px;
     background-color: ${({ theme }) => theme.gray300};
     align-self: center;
-    margin: 0px 10px;
+    margin: 6px 10px;
 `;
 
 const ListingDetails = styled.div`
@@ -78,6 +78,10 @@ const ListingDetails = styled.div`
     }
 
     @media ${device.laptopM} {
+        width: 350px;
+    }
+
+    @media ${device.tabletL} {
         width: 300px;
     }
 `;

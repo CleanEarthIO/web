@@ -8,13 +8,13 @@ export const INIT_STATE: AuthUserModel = {
     errors: {},
 };
 
-const authStart = (state: AuthUserModel) =>
-    updateObject(state, { errors: {}, loading: true });
+const authSuccess = (state: AuthUserModel, action: AuthActions) =>
+    updateObject(state, { user: action.payload, errors: {}, loading: false });
 
-export function AuthReducer(state = INIT_STATE, action: AuthActions) {
+export function AuthReducer(state = INIT_STATE, action: AuthActions): AuthUserModel {
     switch (action.type) {
-        case AuthTypes.AUTH_START:
-            return authStart(state);
+        case AuthTypes.AUTH_SUCCESS:
+            return authSuccess(state, action);
         default:
             return state;
     }

@@ -1,11 +1,25 @@
 import { AuthTypes } from '../types/typesAuth';
 
-export interface AuthStartAction {
-    type: AuthTypes.AUTH_START;
-}
-
 export interface AuthUserModel {
     readonly user: object;
     readonly loading: boolean;
     readonly errors: object;
+}
+
+export interface Auth0User {
+    readonly given_name: string;
+    readonly family_name: string;
+    readonly nickname: string;
+    readonly name: string;
+    readonly picture: string;
+    readonly local: string;
+    readonly update_at: string;
+    readonly email: string;
+    readonly email_verified: boolean;
+    readonly sub: string;
+}
+
+export interface AuthSuccessAction {
+    type: AuthTypes.AUTH_SUCCESS;
+    payload: Auth0User;
 }

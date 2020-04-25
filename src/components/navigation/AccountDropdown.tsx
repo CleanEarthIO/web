@@ -5,6 +5,7 @@ import { FaUserAlt, FaPowerOff, FaChevronDown } from 'react-icons/fa';
 
 import { device } from '../../utils/theme';
 import { ItemDivider } from '../globalUI/GlobalUI';
+import { useAuth0 } from '../../apis/react-auth0-spa';
 
 interface StyleProps {
     arrowActive?: boolean;
@@ -98,11 +99,12 @@ const ListItem = styled.li`
     align-items: center;
 `;
 
-const Test = styled.div`
+const ProfileContainer = styled.div`
     height: 100%;
 `;
 
 export function AccountDropdown() {
+    const { logout } = useAuth0();
     // Reference to outer div
     const node = useRef<HTMLDivElement>(null);
     const [profileDropdown, setProfileDropdown] = useState(false);
@@ -119,7 +121,7 @@ export function AccountDropdown() {
     }, []);
 
     return (
-        <Test ref={node}>
+        <ProfileContainer ref={node}>
             <UserDropdown onClick={() => setProfileDropdown(!profileDropdown)}>
                 <UserProfileBtn>
                     <UserProfileText>Name</UserProfileText>
@@ -134,12 +136,12 @@ export function AccountDropdown() {
                         <ListItem>Profile</ListItem>
                     </ListItemLink>
                     <ItemDivider />
-                    <ListItemLink to='/login'>
+                    <ListItemLink to='/' onClick={() => logout()}>
                         <FaPowerOff />
                         <ListItem>Log Out</ListItem>
                     </ListItemLink>
                 </ProfileList>
             ) : undefined}
-        </Test>
+        </ProfileContainer>
     );
 }

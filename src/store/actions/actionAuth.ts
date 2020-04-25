@@ -1,6 +1,7 @@
 import { AuthTypes } from '../types/typesAuth';
-import { AuthStartAction } from '../interfaces/interfaceAuth';
+import { AuthSuccessAction, Auth0User } from '../interfaces/interfaceAuth';
 
-export function authStart(): AuthStartAction {
-    return { type: AuthTypes.AUTH_START };
+export function authSuccess(data: Auth0User): AuthSuccessAction {
+    return { type: AuthTypes.AUTH_SUCCESS, payload: data };
 }
+
