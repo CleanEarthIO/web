@@ -6,6 +6,8 @@ import cleanseSmall from '../../assets/images/cleanseSmall.png';
 import { AccountDropdown } from './AccountDropdown';
 import cleanseup from '../../apis/cleanseup';
 
+import { useAuth0 } from '../../apis/react-auth0-spa';
+
 interface StyleProps {
     moveRight?: boolean;
     navLogo?: boolean;
@@ -117,6 +119,7 @@ function handleClick() {
 }
 
 export function Navigation(): JSX.Element {
+    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
     return (
         <NavContainer>
             <NavContent>
@@ -140,8 +143,18 @@ export function Navigation(): JSX.Element {
                 <NavList moveRight style={{ height: '100%' }}>
                     <NavItem>
                         {/* <AccountDropdown /> */}
-                        <StyledButton onClick={handleClick}>Login</StyledButton>
-                        <StyledButton>Sign Up</StyledButton>
+                        {!isAuthenticated && (
+                            <>
+                                <StyledButton onClick={() => loginWithRedirect({})}>
+                                    Login
+                                </StyledButton>
+                                <StyledButton>Sign Up</StyledButton>
+                            </>
+                        )}
+
+                        {isAuthenticated && (
+                            <StyledButton onClick={() => logout()}>Log out</StyledButton>
+                        )}
                     </NavItem>
                 </NavList>
             </NavContent>

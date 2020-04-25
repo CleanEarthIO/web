@@ -8,7 +8,15 @@ import { theme } from '../utils/theme';
 import { GlobalStyle } from '../utils/global-styles';
 import { Navigation } from './navigation/Navigation';
 
+import { useAuth0 } from '../apis/react-auth0-spa';
+
 export function App(): JSX.Element {
+    const { loading } = useAuth0();
+
+    if (loading) {
+        return <></>;
+    }
+
     return (
         <Router history={history}>
             <ThemeProvider theme={theme}>
