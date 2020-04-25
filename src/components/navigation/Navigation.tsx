@@ -112,9 +112,10 @@ const StyledButton = styled.button`
 
 export function Navigation(): JSX.Element {
     const { loginWithRedirect } = useAuth0();
-    const isAuthenticated = useSelector(
-        (state: StoreState) => state.authReducer.isAuthenticated
-    );
+    const { isAuthenticated, user } = useSelector((state: StoreState) => ({
+        isAuthenticated: state.authReducer.isAuthenticated,
+        user: state.authReducer.user,
+    }));
 
     return (
         <NavContainer>
@@ -139,7 +140,7 @@ export function Navigation(): JSX.Element {
                 <NavList moveRight style={{ height: '100%' }}>
                     <NavItem>
                         {isAuthenticated ? (
-                            <AccountDropdown />
+                            <AccountDropdown user_profile={user} />
                         ) : (
                             <StyledButton onClick={() => loginWithRedirect({})}>
                                 Login

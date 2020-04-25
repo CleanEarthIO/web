@@ -113,7 +113,11 @@ const handleLogout = (dispatch: Dispatch<AuthLogoutAction>, logout: () => void):
     dispatch(authLogout());
 };
 
-export function AccountDropdown() {
+interface AppProps {
+    user_profile: any;
+}
+
+export function AccountDropdown({ user_profile }: AppProps): JSX.Element {
     const { logout } = useAuth0();
     const dispatch = useDispatch();
 
@@ -136,7 +140,7 @@ export function AccountDropdown() {
         <ProfileContainer ref={node}>
             <UserDropdown onClick={() => setProfileDropdown(!profileDropdown)}>
                 <UserProfileBtn>
-                    <UserProfileText>Name</UserProfileText>
+                    <UserProfileText>{user_profile.given_name}</UserProfileText>
                     <DropdownIcon arrowactive={profileDropdown ? 1 : 0} />
                 </UserProfileBtn>
             </UserDropdown>

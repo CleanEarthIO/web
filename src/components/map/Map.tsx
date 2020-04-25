@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
+import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 
 import mapIcon from '../../assets/images/mapIcon.png';
 import { device } from '../../utils/theme';
@@ -23,6 +23,11 @@ const Mapbox = ReactMapboxGl({
 });
 
 export function Map(): JSX.Element {
+    const [displayPopup, setDisplay] = useState({
+        display: false,
+        coords: [0, 0],
+    });
+
     const [mapSettings] = useState({
         points: [
             [-87.6309729, 41.76716449],
@@ -39,6 +44,7 @@ export function Map(): JSX.Element {
     const image = new Image(20, 30);
     image.src = mapIcon;
     const images = ['myImage', image];
+
     return (
         <MapContainer>
             {/*
@@ -51,9 +57,18 @@ export function Map(): JSX.Element {
                     images={images}
                 >
                     {points.map((point, i) => (
-                        <Feature key={i} coordinates={point} />
+                        <Feature
+                            key={i}
+                            coordinates={point}
+                            onClick={() => setDisplay({ display: true, coords: point })}
+                        />
                     ))}
                 </Layer>
+                {displayPopup.display ? (
+                    <Popup coordinates={displayPopup.coords}>
+                        <h1>Popup</h1>
+                    </Popup>
+                ) : null}
             </Mapbox>
         </MapContainer>
     );
