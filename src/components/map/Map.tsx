@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
+import { FaTimes } from 'react-icons/fa';
 
 import mapIcon from '../../assets/images/mapIcon.png';
 import { device } from '../../utils/theme';
+import { SingleListing } from '../listings/Listings';
 
 const MapContainer = styled.div`
     .mapboxgl-map {
@@ -21,6 +23,31 @@ const MapContainer = styled.div`
 const Mapbox = ReactMapboxGl({
     accessToken: `${process.env.REACT_APP_MAPBOX_KEY}`,
 });
+
+const PopupCloseContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    width: 91%;
+    z-index: 12;
+    margin-top: 4px;
+`;
+
+const PopupClose = styled.button`
+    color: ${({ theme }) => theme.error};
+    font-size: 16px;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
 
 export function Map(): JSX.Element {
     const [displayPopup, setDisplay] = useState({
@@ -65,8 +92,28 @@ export function Map(): JSX.Element {
                     ))}
                 </Layer>
                 {displayPopup.display ? (
-                    <Popup coordinates={displayPopup.coords}>
-                        <h1>Popup</h1>
+                    <Popup
+                        coordinates={displayPopup.coords}
+                        offset={{
+                            // @ts-ignore
+                            'bottom-left': [12, -38],
+                            bottom: [0, -38],
+                            'bottom-right': [-12, -38],
+                        }}
+                    >
+                        <PopupCloseContainer>
+                            <PopupClose
+                                onClick={() =>
+                                    setDisplay({
+                                        display: false,
+                                        coords: displayPopup.coords,
+                                    })
+                                }
+                            >
+                                <FaTimes />
+                            </PopupClose>
+                        </PopupCloseContainer>
+                        <SingleListing />
                     </Popup>
                 ) : null}
             </Mapbox>

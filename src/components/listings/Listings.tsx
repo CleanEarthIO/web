@@ -6,6 +6,10 @@ import testimg from '../../assets/images/testimg.jpg';
 import { ItemDivider } from '../globalUI/GlobalUI';
 import { device } from '../../utils/theme';
 
+interface StyleProps {
+    tOff?: boolean;
+}
+
 const ListingContainer = styled.div`
     margin: 30px;
     display: grid;
@@ -40,12 +44,13 @@ const SmlVerDivider = styled.div`
 
 const ListingDetails = styled.div`
     min-height: 130px;
+    margin: ${({ tOff }: StyleProps) => (tOff ? '0px' : '-40px 15px')};
     position: relative;
-    margin: -40px 15px;
     border-radius: 12px;
     background-color: ${({ theme }) => theme.white};
-    padding: 11px;
-    box-shadow: 0px 0px 38px 0px rgba(0, 0, 0, 0.1);
+    padding: ${({ tOff }: StyleProps) => (tOff ? '3px' : '11px')};
+    box-shadow: ${({ tOff }: StyleProps) =>
+        tOff ? '' : ' 0px 0px 38px 0px rgba(0, 0, 0, 0.1)'};
 
     h1 {
         font-size: 20px;
@@ -78,11 +83,11 @@ const ListingDetails = styled.div`
     }
 
     @media ${device.laptopM} {
-        width: 350px;
+        width: ${({ tOff }: StyleProps) => (tOff ? '255px' : '350px')};
     }
 
     @media ${device.tabletL} {
-        width: 300px;
+        width: ${({ tOff }: StyleProps) => (tOff ? '255px' : '300px')};
     }
 `;
 
@@ -145,6 +150,40 @@ function ListingTest(): JSX.Element[] {
         );
     }
     return test_cards;
+}
+
+export function SingleListing(): JSX.Element {
+    return (
+        <ListingDetails tOff>
+            <h1>Sample text</h1>
+            <ItemDivider />
+            <p>
+                <FaMapMarkerAlt />
+                City, State
+            </p>
+            <div>
+                <p>
+                    <FaRegCalendarAlt />
+                    <span style={{ display: 'flex', flexDirection: 'column' }}>
+                        <ListingSubTitle>Cleanup Date</ListingSubTitle>
+                        0/00/00
+                    </span>
+                </p>
+                <SmlVerDivider />
+                <p>
+                    <FaUsers style={{ fontSize: '19px' }} />
+                    <span style={{ display: 'flex', flexDirection: 'column' }}>
+                        <ListingSubTitle>Attendees</ListingSubTitle>0
+                    </span>
+                </p>
+            </div>
+            <p style={{ marginBottom: '9px' }}>
+                <FaUserAlt /> Organized by:
+            </p>
+            <ItemDivider />
+            <ListingButton>Attend</ListingButton>
+        </ListingDetails>
+    );
 }
 
 export function Listings(): JSX.Element {
