@@ -4,15 +4,10 @@ import { FaMapMarkerAlt, FaRegCalendarAlt, FaUsers, FaUserAlt } from 'react-icon
 
 import testimg from '../../assets/images/testimg.jpg';
 import { ItemDivider } from '../globalUI/GlobalUI';
-import { ThemeInterface } from '../../utils/theme';
-
-interface StyleProps {
-    subTitle?: boolean;
-    theme: ThemeInterface;
-}
+import { device } from '../../utils/theme';
 
 const ListingContainer = styled.div`
-    margin: 30px 15px;
+    margin: 30px;
     display: grid;
     grid-gap: 16px;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -20,6 +15,12 @@ const ListingContainer = styled.div`
 
 const ListingCard = styled.div`
     height: 350px;
+
+    @media ${device.laptopM} {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 const ListingThumbnail = styled.img`
@@ -75,6 +76,10 @@ const ListingDetails = styled.div`
         display: flex;
         margin-bottom: 5px;
     }
+
+    @media ${device.laptopM} {
+        width: 300px;
+    }
 `;
 
 const ListingSubTitle = styled.span`
@@ -97,7 +102,7 @@ const ListingButton = styled.button`
 `;
 
 function ListingTest(): JSX.Element[] {
-    const test_cards = [];
+    const test_cards: any[] = [];
 
     for (let i = 0; i < 25; i += 1) {
         test_cards.push(
@@ -141,4 +146,3 @@ function ListingTest(): JSX.Element[] {
 export function Listings(): JSX.Element {
     return <ListingContainer>{ListingTest()}</ListingContainer>;
 }
-

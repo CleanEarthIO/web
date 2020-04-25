@@ -30,7 +30,8 @@ const size = {
     tabletM: '786px',
     tabletL: '960px',
     laptopS: '1172px',
-    laptopM: '1442px',
+    laptopM: '1353px',
+    laptopL: '1442px',
 };
 
 // Media queries for making things responsive
@@ -43,4 +44,5 @@ export const device = {
     tabletL: `(max-width: ${size.tabletL})`,
     laptopS: `(max-width: ${size.laptopS})`,
     laptopM: `(max-width: ${size.laptopM})`,
+    laptopL: `(max-width: ${size.laptopL})`,
 };

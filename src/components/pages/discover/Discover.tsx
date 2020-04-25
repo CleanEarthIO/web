@@ -3,16 +3,15 @@ import styled from 'styled-components';
 
 import { Listings } from '../../listings/Listings';
 import { device } from '../../../utils/theme';
+import { Map } from '../../map/Map';
 
-const ReplaceMe = styled.div`
-    background-color: gray;
+const MapLayout = styled.div`
     height: 100vh;
     position: fixed;
     width: 50%;
     z-index: 30;
 
-    @media ${device.tabletS} {
-        height: 300px;
+    @media ${device.tabletM} {
         width: 100%;
     }
 `;
@@ -21,7 +20,7 @@ const ListingsLayout = styled.div`
     width: 50%;
     float: right;
 
-    @media ${device.tabletS} {
+    @media ${device.tabletM} {
         width: 100%;
         margin-top: 300px;
     }
@@ -30,7 +29,9 @@ const ListingsLayout = styled.div`
 export function Discover(): JSX.Element {
     return (
         <>
-            <ReplaceMe />
+            <MapLayout>
+                <Map />
+            </MapLayout>
             <ListingsLayout>
                 <Listings />
             </ListingsLayout>
