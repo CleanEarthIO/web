@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-import cleanseSmall from '../../assets/images/cleanseSmall.png';
+import cleanEarthSmall from '../../assets/images/cleanEarthSmall.png';
 import { AccountDropdown } from './AccountDropdown';
 import { useAuth0 } from '../../apis/react-auth0-spa';
 import { StoreState, useSelector } from '../../store/reducers/reducers';
@@ -121,7 +121,7 @@ export function Navigation(): JSX.Element {
         <NavContainer>
             <NavContent>
                 <NavLogo>
-                    <NavImg src={cleanseSmall} />
+                    <NavImg src={cleanEarthSmall} />
                 </NavLogo>
                 <NavRoutes>
                     <NavList>

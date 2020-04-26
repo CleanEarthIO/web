@@ -14,10 +14,7 @@ const eventStart = (state: EventsAllState) =>
     });
 
 const eventsAll = (state: EventsAllState, action: EventActions) =>
-    updateObject(state, {
-        events: action.payload,
-        loading: false,
-    });
+    updateObject(state, { events: action.payload, loading: false });
 
 const eventFail = (state: EventsAllState, action: EventActions) =>
     updateObject(state, {

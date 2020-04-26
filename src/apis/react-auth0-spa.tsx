@@ -90,6 +90,7 @@ export const Auth0Provider = ({
     }, []);
 
     if (userToken !== '') {
+        console.log('I got fired');
         dispatch(authGetCleanEarthProfile(userToken));
     }
 

@@ -165,6 +165,7 @@ function ListingTest(): JSX.Element[] {
 }
 
 export function SingleListing({ point }: AppProps): JSX.Element {
+    console.log(point);
     return (
         <ListingDetails tOff>
             <h1>Sample text</h1>

@@ -111,6 +111,7 @@ export function Map(): JSX.Element {
         point: {} as Point,
     });
 
+    // TODO: Ask for location and put the coords in
     const [mapSettings, setMapSettings] = useState({
         points: [] as Point[],
         zoom: [15],

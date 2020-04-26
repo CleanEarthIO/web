@@ -38,15 +38,18 @@ export function authFail(data: object): AuthFailAction {
 export const authGetCleanEarthProfile = (userToken: string) => (dispatch: any) => {
     dispatch(authStart());
 
+    console.log(userToken);
     const CONFIG = {
         headers: {
-            Authorization: `Bearer ${userToken} `,
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${userToken}`,
         },
     };
 
+    console.log(CONFIG.headers);
+
     cleanearth
-        .post('/login', CONFIG)
+        .post('/login', null, CONFIG)
         .then((res) => {
             console.log(res);
             dispatch(authCleanEarthProfile(res.data));

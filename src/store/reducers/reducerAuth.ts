@@ -27,7 +27,14 @@ const authGetToken = (state: AuthUserState, action: AuthActions) =>
     });
 
 const authLogout = (state: AuthUserState) =>
-    updateObject(state, { user: {}, errors: {}, loading: false, isAuthenticated: false });
+    updateObject(state, {
+        user: {},
+        errors: {},
+        loading: false,
+        isAuthenticated: false,
+        user_token: '',
+        user_cleanearth: {},
+    });
 
 const authGetCleanEarthProfile = (state: AuthUserState, action: AuthActions) =>
     updateObject(state, {

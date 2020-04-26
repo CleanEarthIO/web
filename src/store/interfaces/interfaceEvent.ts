@@ -15,8 +15,14 @@ export interface EventsAllModel {
         readonly email: string;
         readonly id: number;
         readonly name: string;
-        readonly points: number;
     };
+    readonly country: string;
+    readonly city: string;
+    readonly state: string;
+    readonly road: string;
+    readonly postcode: string;
+    readonly state_code: string;
+    readonly country_code: string;
 }
 
 export interface EventsAllState {
