@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
+import ReactMapboxGl, { Layer, Feature, Popup, Marker } from 'react-mapbox-gl';
 import { FaTimes } from 'react-icons/fa';
 
 import mapIcon from '../../assets/images/mapIcon.png';
@@ -70,11 +70,21 @@ export interface Point {
     date: string;
     leader: Member;
     members: Member[];
+    city: string;
+    state: string;
 }
 
 export function Map(): JSX.Element {
     const dispatch = useDispatch();
+    const [userLoc, setUserLoc] = useState({
+        latitude: 0,
+        longitude: 0,
+        enabled: false,
+    });
+
     const events = useSelector((state: StoreState) => state.eventReducer.events);
+
+    console.log('Events', events);
 
     const fetchEvents = useCallback(() => {
         dispatch(fetchAllEvents());
@@ -84,25 +94,37 @@ export function Map(): JSX.Element {
         if (_.isEmpty(events)) {
             fetchEvents();
         }
+
+        navigator.geolocation.getCurrentPosition((pos) => {
+            setUserLoc({
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+                enabled: true,
+            });
+        });
     }, []);
 
     useEffect(() => {
         let points: Point[] = [];
-        events.map((ev, i) => {
+        events.map((ev) => {
             let p: Point = {
                 id: ev.id,
-                coords: [ev.latitude, ev.longitude],
+                coords: [ev.longitude, ev.latitude],
                 date: ev.date,
                 leader: ev.leader,
+                city: ev.city,
                 // @ts-ignore
                 members: ev.members,
+                postcode: ev.postcode,
+                state: ev.state,
+                state_code: ev.state_code,
             };
             points.push(p);
         });
         setMapSettings({
             points: points,
-            zoom: [15],
-            center: [24.3, 42.3],
+            zoom: [0],
+            center: [userLoc.longitude, userLoc.latitude],
         });
     }, [events]);
 
@@ -114,8 +136,8 @@ export function Map(): JSX.Element {
     // TODO: Ask for location and put the coords in
     const [mapSettings, setMapSettings] = useState({
         points: [] as Point[],
-        zoom: [15],
-        center: [-87.63097788775872, 41.767174164037044],
+        zoom: [0],
+        center: [0, 0],
     });
 
     const { points, zoom, center } = mapSettings;
@@ -142,6 +164,22 @@ export function Map(): JSX.Element {
                         />
                     ))}
                 </Layer>
+                {userLoc.enabled ? (
+                    <Layer
+                        type='symbol'
+                        id='points'
+                        layout={{ 'icon-image': 'myImage', 'icon-allow-overlap': true }}
+                        images={images}
+                    >
+                        <Feature
+                            // @ts-ignore
+                            type='symbol'
+                            coordinates={[userLoc.longitude, userLoc.latitude]}
+                        />
+                        <h1>hello</h1>
+                    </Layer>
+                ) : null}
+
                 {displayPopup.display ? (
                     <Popup
                         coordinates={displayPopup.point.coords}

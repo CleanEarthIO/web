@@ -40,13 +40,13 @@ const ListingThumbnail = styled.img`
 `;
 
 const ListingDetails = styled.div`
-    min-height: 130px;
+    min-height: 50px;
     margin: ${({ tOff }: StyleProps) => (tOff ? '0px' : '-40px 15px')};
     position: relative;
     border-radius: 12px;
     background-color: ${({ theme }) => theme.white};
     width: ${({ tOff }: StyleProps) => (tOff ? '330px' : null)};
-    padding: ${({ tOff }: StyleProps) => (tOff ? '3px' : '11px')};
+    padding: ${({ tOff }: StyleProps) => (tOff ? '3px' : '15px')};
     box-shadow: ${({ tOff }: StyleProps) =>
         tOff ? '' : ' 0px 0px 38px 0px rgba(0, 0, 0, 0.1)'};
 
@@ -122,13 +122,11 @@ interface AppProps {
 
 function ListingTest(): JSX.Element[] {
     const test_cards: any[] = [];
-
     for (let i = 0; i < 25; i += 1) {
         test_cards.push(
             <ListingCard key={i}>
                 <ListingThumbnail src={testimg} />
                 <ListingDetails>
-                    <h1>Sample text</h1>
                     <ItemDivider />
                     <p>
                         <FaMapMarkerAlt />
@@ -165,14 +163,12 @@ function ListingTest(): JSX.Element[] {
 }
 
 export function SingleListing({ point }: AppProps): JSX.Element {
-    console.log(point);
+    console.log('Points', point);
     return (
         <ListingDetails tOff>
-            <h1>Sample text</h1>
-            <ItemDivider />
             <p>
                 <FaMapMarkerAlt />
-                City, State
+                {point!.city}, {point!.state}
             </p>
             <div>
                 <p>
@@ -198,7 +194,7 @@ export function SingleListing({ point }: AppProps): JSX.Element {
                 </p>
             </div>
             <ItemDivider />
-            <ListingButton>Create Cleanup</ListingButton>
+            <ListingButton>Attend</ListingButton>
         </ListingDetails>
     );
 }

@@ -42,7 +42,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .mapboxgl-canvas{
-        width: 100%;
+        width: 100% !important;
     }
 `;
 
