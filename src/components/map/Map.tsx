@@ -18,13 +18,10 @@ const MapContainer = styled.div`
         height: 100%;
         width: 100%;
     }
-
     .mapboxgl-canvas {
         width: 100%;
     }
-
     height: 100vh;
-
     @media ${device.tabletM} {
         height: 300px;
     }
@@ -40,7 +37,7 @@ const PopupCloseContainer = styled.div`
     position: absolute;
     width: 91%;
     z-index: 12;
-    margin-top: 4px;
+    margin-top: -9px;
 `;
 
 const PopupClose = styled.button`
@@ -49,11 +46,9 @@ const PopupClose = styled.button`
     padding: 0;
     background-color: transparent;
     cursor: pointer;
-
     &:hover {
         opacity: 0.8;
     }
-
     &:focus {
         outline: none;
     }
@@ -74,6 +69,7 @@ export interface Point {
     members: Member[];
     city: string;
     state: string;
+    road: string;
 }
 
 export function Map(): JSX.Element {
@@ -145,7 +141,7 @@ export function Map(): JSX.Element {
     eventIcon.src = mapIcon;
     const dumpster = new Image(20, 20);
     dumpster.src = dumpsterIcon;
-    const pin = new Image(10, 20);
+    const pin = new Image(20, 35);
     pin.src = pinIcon;
     const images = [
         ['eventIcon', eventIcon],

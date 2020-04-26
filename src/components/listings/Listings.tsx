@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaMapMarkerAlt, FaRegCalendarAlt, FaUsers, FaUserAlt } from 'react-icons/fa';
 
@@ -6,6 +7,8 @@ import testimg from '../../assets/images/testimg.jpg';
 import { ItemDivider } from '../globalUI/GlobalUI';
 import { device } from '../../utils/theme';
 import { Point } from '../map/Map';
+import { StoreState } from '../../store/reducers/reducers';
+import cleanearth from '../../apis/cleanearth';
 
 interface StyleProps {
     tOff?: boolean;
@@ -40,30 +43,35 @@ const ListingThumbnail = styled.img`
 `;
 
 const ListingDetails = styled.div`
-    min-height: 50px;
+    min-height: 130px;
     margin: ${({ tOff }: StyleProps) => (tOff ? '0px' : '-40px 15px')};
     position: relative;
     border-radius: 12px;
     background-color: ${({ theme }) => theme.white};
     width: ${({ tOff }: StyleProps) => (tOff ? '330px' : null)};
-    padding: ${({ tOff }: StyleProps) => (tOff ? '3px' : '15px')};
+    padding: ${({ tOff }: StyleProps) => (tOff ? '3px' : '11px')};
     box-shadow: ${({ tOff }: StyleProps) =>
         tOff ? '' : ' 0px 0px 38px 0px rgba(0, 0, 0, 0.1)'};
 
     h1 {
-        font-size: 20px;
+        font-size: ${({ tOff }: StyleProps) => (tOff ? '15px' : '18px')};
         margin-bottom: 5px;
         color: ${({ theme }) => theme.gray800};
     }
 
     p {
         display: flex;
+        justify-content: center;
         align-items: center;
 
         font-size: 14px;
         margin: 9px 0px 0px 0px;
 
         color: ${({ theme }) => theme.gray500};
+
+        @media ${device.tabletL} {
+            justify-content: initial;
+        }
 
         svg {
             margin-right: 6px;
@@ -82,6 +90,10 @@ const ListingDetails = styled.div`
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
         margin-bottom: 9px;
+
+        @media ${device.tabletL} {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
     }
 
     @media ${device.laptopM} {
@@ -120,72 +132,105 @@ interface AppProps {
     point?: Point;
 }
 
+function handleClick(eventID: number) {
+    console.log(eventID);
+    cleanearth
+        .post(`/event/${eventID}`)
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => console.log(err));
+}
+
 function ListingTest(): JSX.Element[] {
-    const test_cards: any[] = [];
-    for (let i = 0; i < 25; i += 1) {
-        test_cards.push(
+    const clean_events = useSelector((state: StoreState) => state.eventReducer.events);
+    const user_profile = useSelector(
+        // @ts-ignore
+        (state: StoreState) => state.authReducer.user_cleanearth.id
+    );
+    console.log('userid', user_profile);
+
+    const event_listings = clean_events.map((event, i) => {
+        return (
             <ListingCard key={i}>
                 <ListingThumbnail src={testimg} />
                 <ListingDetails>
+                    <h1>{event.road}</h1>
                     <ItemDivider />
-                    <p>
+                    <p style={{ justifyContent: 'initial ' }}>
                         <FaMapMarkerAlt />
-                        City, State
+                        {event.city}, {event.state}
                     </p>
                     <div>
                         <p>
                             <FaRegCalendarAlt />
                             <span>
                                 <ListingSubTitle>Cleanup Date</ListingSubTitle>
-                                0/00/00
+                                {event.date}
                             </span>
                         </p>
                         <p>
                             <FaUsers style={{ fontSize: '19px' }} />
                             <span>
-                                <ListingSubTitle>Attendees</ListingSubTitle>0
+                                <ListingSubTitle>Attendees</ListingSubTitle>
+                                {/*
+                                // @ts-ignore */}
+                                {event.members.length}
                             </span>
                         </p>
                         <p>
                             <FaUserAlt />
                             <span>
-                                <ListingSubTitle>Created by</ListingSubTitle>Name
+                                <ListingSubTitle>Organized by</ListingSubTitle>
+                                {event.leader.name}
                             </span>
                         </p>
                     </div>
                     <ItemDivider />
-                    <ListingButton>Attend</ListingButton>
+                    {user_profile === event.leader.id ? (
+                        <ListingButton style={{ backgroundColor: '#f2a839' }}>
+                            Attending
+                        </ListingButton>
+                    ) : (
+                        <ListingButton onClick={() => handleClick(event.id)}>
+                            Attend
+                        </ListingButton>
+                    )}
                 </ListingDetails>
             </ListingCard>
         );
-    }
-    return test_cards;
+    });
+    return event_listings;
 }
 
 export function SingleListing({ point }: AppProps): JSX.Element {
-    console.log('Points', point);
     return (
         <ListingDetails tOff>
-            <p>
+            <h1>
+                {point!.road}
+                {'    '}
+            </h1>
+            <ItemDivider />
+            <p style={{ justifyContent: 'initial ' }}>
                 <FaMapMarkerAlt />
                 {point!.city}, {point!.state}
             </p>
             <div>
-                <p>
+                <p style={{ justifyContent: 'initial ' }}>
                     <FaRegCalendarAlt />
                     <span>
                         <ListingSubTitle>Cleanup Date</ListingSubTitle>
                         {point!.date}
                     </span>
                 </p>
-                <p>
+                <p style={{ justifyContent: 'initial ' }}>
                     <FaUsers style={{ fontSize: '19px' }} />
                     <span>
                         <ListingSubTitle>Attendees</ListingSubTitle>
                         {point!.members.length}
                     </span>
                 </p>
-                <p>
+                <p style={{ justifyContent: 'initial ' }}>
                     <FaUserAlt />
                     <span>
                         <ListingSubTitle>Created by</ListingSubTitle>
@@ -194,7 +239,7 @@ export function SingleListing({ point }: AppProps): JSX.Element {
                 </p>
             </div>
             <ItemDivider />
-            <ListingButton>Attend</ListingButton>
+            <ListingButton>Create Cleanup</ListingButton>
         </ListingDetails>
     );
 }
