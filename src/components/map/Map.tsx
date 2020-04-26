@@ -115,8 +115,6 @@ export function Map(): JSX.Element {
             fetchAllTrash();
         }
 
-        dispatch(fetchUserEvents());
-
         navigator.geolocation.getCurrentPosition((pos) => {
             setUserLoc({
                 latitude: pos.coords.latitude,
