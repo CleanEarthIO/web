@@ -5,6 +5,7 @@ import { FaMapMarkerAlt, FaRegCalendarAlt, FaUsers, FaUserAlt } from 'react-icon
 import testimg from '../../assets/images/testimg.jpg';
 import { ItemDivider } from '../globalUI/GlobalUI';
 import { device } from '../../utils/theme';
+import { Point } from '../map/Map';
 
 interface StyleProps {
     tOff?: boolean;
@@ -115,6 +116,10 @@ const ListingButton = styled.button`
     }
 `;
 
+interface AppProps {
+    point?: Point;
+}
+
 function ListingTest(): JSX.Element[] {
     const test_cards: any[] = [];
 
@@ -159,7 +164,7 @@ function ListingTest(): JSX.Element[] {
     return test_cards;
 }
 
-export function SingleListing(): JSX.Element {
+export function SingleListing({ point }: AppProps): JSX.Element {
     return (
         <ListingDetails tOff>
             <h1>Sample text</h1>
@@ -173,19 +178,21 @@ export function SingleListing(): JSX.Element {
                     <FaRegCalendarAlt />
                     <span>
                         <ListingSubTitle>Cleanup Date</ListingSubTitle>
-                        0/00/00
+                        {point!.date}
                     </span>
                 </p>
                 <p>
                     <FaUsers style={{ fontSize: '19px' }} />
                     <span>
-                        <ListingSubTitle>Attendees</ListingSubTitle>0
+                        <ListingSubTitle>Attendees</ListingSubTitle>
+                        {point!.members.length}
                     </span>
                 </p>
                 <p>
                     <FaUserAlt />
                     <span>
-                        <ListingSubTitle>Created by</ListingSubTitle>Name
+                        <ListingSubTitle>Created by</ListingSubTitle>
+                        {point!.leader.name}
                     </span>
                 </p>
             </div>

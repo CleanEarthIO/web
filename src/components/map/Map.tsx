@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import _ from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import { FaTimes } from 'react-icons/fa';
@@ -8,6 +9,7 @@ import mapIcon from '../../assets/images/mapIcon.png';
 import { device } from '../../utils/theme';
 import { SingleListing } from '../listings/Listings';
 import { fetchAllEvents } from '../../store/actions/actionEvent';
+import { StoreState } from '../../store/reducers/reducers';
 
 const MapContainer = styled.div`
     .mapboxgl-map {
@@ -55,30 +57,62 @@ const PopupClose = styled.button`
     }
 `;
 
+interface Member {
+    email: String;
+    id: number;
+    name: string;
+    points: number;
+}
+
+export interface Point {
+    id: number;
+    coords: number[];
+    date: string;
+    leader: Member;
+    members: Member[];
+}
+
 export function Map(): JSX.Element {
     const dispatch = useDispatch();
+    const events = useSelector((state: StoreState) => state.eventReducer.events);
 
     const fetchEvents = useCallback(() => {
         dispatch(fetchAllEvents());
     }, [dispatch]);
 
     useEffect(() => {
-        fetchEvents();
-    }, [fetchEvents]);
+        if (_.isEmpty(events)) {
+            fetchEvents();
+        }
+    }, []);
+
+    useEffect(() => {
+        let points: Point[] = [];
+        events.map((ev, i) => {
+            let p: Point = {
+                id: ev.id,
+                coords: [ev.latitude, ev.longitude],
+                date: ev.date,
+                leader: ev.leader,
+                // @ts-ignore
+                members: ev.members,
+            };
+            points.push(p);
+        });
+        setMapSettings({
+            points: points,
+            zoom: [15],
+            center: [24.3, 42.3],
+        });
+    }, [events]);
 
     const [displayPopup, setDisplay] = useState({
         display: false,
-        coords: [0, 0],
+        point: {} as Point,
     });
 
-    const [mapSettings] = useState({
-        points: [
-            [-87.6309729, 41.76716449],
-            [-87.63097366, 41.76668286],
-            [-87.63095643, 41.76619789],
-            [-87.63095245, 41.76578],
-            [-87.63094033, 41.76561825],
-        ],
+    const [mapSettings, setMapSettings] = useState({
+        points: [] as Point[],
         zoom: [15],
         center: [-87.63097788775872, 41.767174164037044],
     });
@@ -102,14 +136,14 @@ export function Map(): JSX.Element {
                     {points.map((point, i) => (
                         <Feature
                             key={i}
-                            coordinates={point}
-                            onClick={() => setDisplay({ display: true, coords: point })}
+                            coordinates={point.coords}
+                            onClick={() => setDisplay({ display: true, point: point })}
                         />
                     ))}
                 </Layer>
                 {displayPopup.display ? (
                     <Popup
-                        coordinates={displayPopup.coords}
+                        coordinates={displayPopup.point.coords}
                         offset={{
                             // @ts-ignore
                             'bottom-left': [12, -38],
@@ -122,14 +156,14 @@ export function Map(): JSX.Element {
                                 onClick={() =>
                                     setDisplay({
                                         display: false,
-                                        coords: displayPopup.coords,
+                                        point: displayPopup.point,
                                     })
                                 }
                             >
                                 <FaTimes />
                             </PopupClose>
                         </PopupCloseContainer>
-                        <SingleListing />
+                        <SingleListing point={displayPopup.point} />
                     </Popup>
                 ) : null}
             </Mapbox>
