@@ -52,6 +52,7 @@ const ListingDetails = styled.div`
     position: relative;
     border-radius: 12px;
     background-color: ${({ theme }) => theme.white};
+    width: ${({ tOff }: StyleProps) => (tOff ? '330px' : null)};
     padding: ${({ tOff }: StyleProps) => (tOff ? '3px' : '11px')};
     box-shadow: ${({ tOff }: StyleProps) =>
         tOff ? '' : ' 0px 0px 38px 0px rgba(0, 0, 0, 0.1)'};
@@ -76,7 +77,10 @@ const ListingDetails = styled.div`
         }
 
         span {
+            display: flex;
+            flex-direction: column;
             font-size: 12px;
+            margin-bottom: ${({ tOff }: StyleProps) => (tOff ? '-6px' : null)};
             color: ${({ theme }) => theme.gray500};
         }
     }
@@ -136,20 +140,20 @@ function ListingTest(): JSX.Element[] {
                     <div>
                         <p>
                             <FaRegCalendarAlt />
-                            <span style={{ display: 'flex', flexDirection: 'column' }}>
+                            <span>
                                 <ListingSubTitle>Cleanup Date</ListingSubTitle>
                                 0/00/00
                             </span>
                         </p>
                         <p>
                             <FaUsers style={{ fontSize: '19px' }} />
-                            <span style={{ display: 'flex', flexDirection: 'column' }}>
+                            <span>
                                 <ListingSubTitle>Attendees</ListingSubTitle>0
                             </span>
                         </p>
                         <p>
                             <FaUserAlt />
-                            <span style={{ display: 'flex', flexDirection: 'column' }}>
+                            <span>
                                 <ListingSubTitle>Created by</ListingSubTitle>Name
                             </span>
                         </p>
@@ -175,26 +179,26 @@ export function SingleListing(): JSX.Element {
             <div>
                 <p>
                     <FaRegCalendarAlt />
-                    <span style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span>
                         <ListingSubTitle>Cleanup Date</ListingSubTitle>
                         0/00/00
                     </span>
                 </p>
                 <p>
                     <FaUsers style={{ fontSize: '19px' }} />
-                    <span style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span>
                         <ListingSubTitle>Attendees</ListingSubTitle>0
                     </span>
                 </p>
                 <p>
                     <FaUserAlt />
-                    <span style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span>
                         <ListingSubTitle>Created by</ListingSubTitle>Name
                     </span>
                 </p>
             </div>
             <ItemDivider />
-            <ListingButton>Attend</ListingButton>
+            <ListingButton>Create Cleanup</ListingButton>
         </ListingDetails>
     );
 }

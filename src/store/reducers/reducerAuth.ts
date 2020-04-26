@@ -20,7 +20,7 @@ const authSuccess = (state: AuthUserModel, action: AuthActions) =>
 const authLogout = (state: AuthUserModel) =>
     updateObject(state, { user: {}, errors: {}, loading: false, isAuthenticated: false });
 
-export function AuthReducer(state = INIT_STATE, action: AuthActions): AuthUserModel {
+export function authReducer(state = INIT_STATE, action: AuthActions): AuthUserModel {
     switch (action.type) {
         case AuthTypes.AUTH_SUCCESS:
             return authSuccess(state, action);
