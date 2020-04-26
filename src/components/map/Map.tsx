@@ -58,9 +58,7 @@ const PopupClose = styled.button`
 export function Map(): JSX.Element {
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(fetchAllEvents());
-    }, []);
+    useEffect(() => {}, []);
 
     const [displayPopup, setDisplay] = useState({
         display: false,
