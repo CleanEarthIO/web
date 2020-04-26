@@ -155,6 +155,7 @@ function handleClick(eventID: number) {
         .post(`/event/${eventID}`)
         .then((res) => {
             console.log(res);
+            window.location.reload(true);
         })
         .catch((err) => console.log(err));
 }
@@ -164,6 +165,7 @@ function handleCancel(eventID) {
         .delete(`/leaveEvent/${eventID}`)
         .then((res) => {
             console.log(res);
+            window.location.reload(true);
         })
         .catch((err) => {
             console.log(err);
@@ -254,10 +256,7 @@ function ListingTest(): JSX.Element[] {
 export function SingleListing({ point }: AppProps): JSX.Element {
     return (
         <ListingDetails tOff>
-            <h1>
-                {point!.road}
-                {'    '}
-            </h1>
+            <h1>{point!.road}</h1>
             <ItemDivider />
             <p style={{ justifyContent: 'initial ' }}>
                 <FaMapMarkerAlt />
@@ -287,11 +286,33 @@ export function SingleListing({ point }: AppProps): JSX.Element {
                 </p>
             </div>
             <ItemDivider />
-            <ListingButton>Create Cleanup</ListingButton>
         </ListingDetails>
     );
 }
 
+export const TabContainer = styled.div`
+    display: flex;
+`;
+
+export const TabButton = styled.button`
+    font-size: 16px;
+    margin-left: 19px;
+    cursor: pointer;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+    }
+`;
+
 export function Listings(): JSX.Element {
-    return <ListingContainer>{ListingTest()}</ListingContainer>;
+    return (
+        <ListingContainer>
+            <h1>Discover Cleanups</h1>
+            <TabContainer>
+                <TabButton>All listings</TabButton>
+                <TabButton>Your listings</TabButton>
+            </TabContainer>
+            {ListingTest()}
+        </ListingContainer>
+    );
 }

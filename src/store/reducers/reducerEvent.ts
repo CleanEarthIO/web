@@ -4,6 +4,7 @@ import { updateObject } from '../../utils/updateObject';
 
 export const INIT_STATE: EventsAllState = {
     events: [],
+    userEvents: [],
     loading: false,
     errors: {},
 };
@@ -16,6 +17,9 @@ const eventStart = (state: EventsAllState) =>
 const eventsAll = (state: EventsAllState, action: EventActions) =>
     updateObject(state, { events: action.payload, loading: false });
 
+const eventFetchUserEvents = (state: EventsAllState, action: EventActions) =>
+    updateObject(state, { userEvents: action.payload, loading: false });
+
 const eventFail = (state: EventsAllState, action: EventActions) =>
     updateObject(state, {
         errors: action.payload,
@@ -27,6 +31,8 @@ export function eventReducer(state = INIT_STATE, action: EventActions): EventsAl
             return eventStart(state);
         case EventTypes.EVENTS_ALL:
             return eventsAll(state, action);
+        case EventTypes.EVENT_FETCH_USER_EVENTS:
+            return eventFetchUserEvents(state, action);
         case EventTypes.EVENT_FAIL:
             return eventFail(state, action);
         default:

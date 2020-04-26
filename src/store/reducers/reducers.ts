@@ -11,9 +11,14 @@ import { AuthUserState } from '../interfaces/interfaceAuth';
 import { eventReducer } from './reducerEvent';
 import { EventsAllState } from '../interfaces/interfaceEvent';
 
+// TRASH
+import { trashReducer } from './reducerTrash';
+import { TrashState } from '../interfaces/interfaceTrash';
+
 export interface StoreState {
     authReducer: AuthUserState;
     eventReducer: EventsAllState;
+    trashReducer: TrashState;
 }
 
 const persistConfig = {
@@ -25,6 +30,7 @@ const persistConfig = {
 const rootReducer = combineReducers<StoreState>({
     authReducer,
     eventReducer,
+    trashReducer,
 });
 
 type RootState = ReturnType<typeof rootReducer>;

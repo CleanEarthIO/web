@@ -4,6 +4,7 @@ import {
     EventsGetAction,
     EventFailAction,
     EventsAllModel,
+    EventFetchUserEvents,
 } from '../interfaces/interfaceEvent';
 import cleanearth from '../../apis/cleanearth';
 
@@ -18,6 +19,23 @@ export function eventsAll(data: EventsAllModel): EventsGetAction {
 export function eventFail(data: string): EventFailAction {
     return { type: EventTypes.EVENT_FAIL, payload: data };
 }
+
+export function eventFetchUserEvents(data: EventsAllModel): EventFetchUserEvents {
+    return { type: EventTypes.EVENT_FETCH_USER_EVENTS, payload: data };
+}
+
+export const fetchUserEvents = () => (dispatch: any) => {
+    dispatch(eventStart());
+
+    cleanearth
+        .get('/myEvents')
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
 
 export const fetchAllEvents = () => (dispatch: any) => {
     dispatch(eventStart());

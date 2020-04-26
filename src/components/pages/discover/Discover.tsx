@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import { Listings } from '../../listings/Listings';
 import { device } from '../../../utils/theme';
 import { Map } from '../../map/Map';
+import { fetchUserEvents } from '../../../store/actions/actionEvent';
+import { fetchTrash } from '../../../store/actions/actionTrash';
 
 const MapLayout = styled.div`
     height: 100vh;
@@ -27,6 +30,21 @@ const ListingsLayout = styled.div`
 `;
 
 export function Discover(): JSX.Element {
+    const dispatch = useDispatch();
+
+    const fetchEvents = useCallback(() => {
+        dispatch(fetchUserEvents());
+    }, [dispatch]);
+
+    const fetchAllTrash = useCallback(() => {
+        dispatch(fetchTrash());
+    }, [dispatch]);
+
+    useEffect(() => {
+        fetchEvents();
+        fetchAllTrash();
+    }, []);
+
     return (
         <>
             <MapLayout>

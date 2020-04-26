@@ -126,11 +126,6 @@ export function Navigation(): JSX.Element {
                 <NavRoutes>
                     <NavList>
                         <NavItem>
-                            <StyledNavLink exact to='/' activeClassName='active'>
-                                Home
-                            </StyledNavLink>
-                        </NavItem>
-                        <NavItem>
                             <StyledNavLink to='/discover' activeClassName='active'>
                                 Discover
                             </StyledNavLink>

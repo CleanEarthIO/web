@@ -27,6 +27,7 @@ export interface EventsAllModel {
 
 export interface EventsAllState {
     readonly events: EventsAllModel[];
+    readonly userEvents: EventsAllModel[];
     readonly loading: boolean;
     readonly errors: object;
 }
@@ -38,6 +39,11 @@ export interface EventStartAction {
 
 export interface EventsGetAction {
     type: EventTypes.EVENTS_ALL;
+    payload: EventsAllModel;
+}
+
+export interface EventFetchUserEvents {
+    type: EventTypes.EVENT_FETCH_USER_EVENTS;
     payload: EventsAllModel;
 }
 
