@@ -312,6 +312,7 @@ function handleTrash(trash: Trash, user_token: string) {
         )
         .then((res) => {
             console.log('from handleTrash', res.data);
+            window.location.reload(true);
         })
         .catch((err) => {
             console.log(err);
