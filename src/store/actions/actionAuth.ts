@@ -38,7 +38,6 @@ export function authFail(data: object): AuthFailAction {
 export const authGetCleanEarthProfile = (userToken: string) => (dispatch: any) => {
     dispatch(authStart());
 
-    console.log(userToken);
     const CONFIG = {
         headers: {
             'Content-Type': 'application/json',
@@ -46,12 +45,9 @@ export const authGetCleanEarthProfile = (userToken: string) => (dispatch: any) =
         },
     };
 
-    console.log(CONFIG.headers);
-
     cleanearth
         .post('/login', null, CONFIG)
         .then((res) => {
-            console.log(res);
             dispatch(authCleanEarthProfile(res.data));
         })
         .catch((err) => {
