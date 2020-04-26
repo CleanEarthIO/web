@@ -22,7 +22,7 @@ const ListingContainer = styled.div`
 `;
 
 const ListingCard = styled.div`
-    height: 350px;
+    height: 365px;
 
     @media ${device.laptopM} {
         display: flex;

@@ -10,22 +10,17 @@ export const INIT_STATE: EventsAllState = {
 
 const eventStart = (state: EventsAllState) =>
     updateObject(state, {
-        events: [],
         loading: true,
-        errors: {},
     });
 
 const eventsAll = (state: EventsAllState, action: EventActions) =>
     updateObject(state, {
         events: action.payload,
         loading: false,
-        errors: {},
     });
 
 const eventFail = (state: EventsAllState, action: EventActions) =>
     updateObject(state, {
-        events: [],
-        loading: false,
         errors: action.payload,
     });
 

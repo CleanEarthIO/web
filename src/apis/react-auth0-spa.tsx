@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useDispatch } from 'react-redux';
-import { authSuccess } from '../store/actions/actionAuth';
+import { useDispatch, useSelector } from 'react-redux';
 import createAuth0Client, {
     PopupLoginOptions,
     RedirectLoginResult,
@@ -13,6 +12,12 @@ import createAuth0Client, {
     Auth0ClientOptions,
 } from '@auth0/auth0-spa-js';
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
+
+import {
+    authSuccess,
+    authGetToken,
+    authGetCleanEarthProfile,
+} from '../store/actions/actionAuth';
 
 interface Auth0Context {
     isAuthenticated: boolean;
@@ -33,8 +38,9 @@ interface Auth0ProviderOptions {
     onRedirectCallback?(result: RedirectLoginResult): void;
 }
 
-const DEFAULT_REDIRECT_CALLBACK = () =>
+const DEFAULT_REDIRECT_CALLBACK = () => {
     window.history.replaceState({}, document.title, window.location.pathname);
+};
 
 export const Auth0Context = React.createContext<Auth0Context | null>(null);
 export const useAuth0 = () => useContext(Auth0Context)!;
@@ -49,6 +55,8 @@ export const Auth0Provider = ({
     const [auth0Client, setAuth0] = useState<Auth0Client>();
     const [loading, setLoading] = useState(true);
     const [popupOpen, setPopupOpen] = useState(false);
+
+    const [userToken, setUserToken] = useState('');
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -67,8 +75,12 @@ export const Auth0Provider = ({
 
             if (isAuthenticated) {
                 const user = await auth0FromHook.getUser();
+                const claims = await auth0FromHook.getIdTokenClaims();
+                const token = claims.__raw;
+
+                setUserToken(token);
+                dispatch(authGetToken(token));
                 dispatch(authSuccess(user));
-                console.log('From react-auth0', user);
                 setUser(user);
             }
 
@@ -76,6 +88,10 @@ export const Auth0Provider = ({
         };
         initAuth0();
     }, []);
+
+    if (userToken !== '') {
+        dispatch(authGetCleanEarthProfile(userToken));
+    }
 
     const loginWithPopup = async (o: PopupLoginOptions) => {
         setPopupOpen(true);
