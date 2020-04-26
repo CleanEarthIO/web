@@ -303,7 +303,11 @@ function handleTrash(trash: Trash, user_token: string) {
     cleanearth
         .post(
             '/event',
-            { lat: trash.latitude, lon: trash.longitude, date: new Date() },
+            {
+                latitude: trash.latitude,
+                longitude: trash.longitude,
+                date: new Date(Date.now() + 6.04e8 * 2),
+            },
             CONFIG
         )
         .then((res) => {
@@ -327,11 +331,16 @@ export function TrashListing({ trash }: AppProps): JSX.Element {
                 <FaMapMarkerAlt />
                 {trash!.city}, {trash!.state}
             </p>
+
+            <img
+                src={`https://cleanearth.io/uploads/${trash!.image}`}
+                style={{ width: '200px', height: '200px' }}
+            />
             <ItemDivider />
             {/*
             // @ts-ignore */}
             <ListingButton onClick={() => handleTrash(trash, user_token_id)}>
-                Create Event
+                Cleanup
             </ListingButton>
         </ListingDetails>
     );
