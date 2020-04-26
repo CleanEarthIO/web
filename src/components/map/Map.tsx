@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ReactMapboxGl, { Layer, Feature, Popup, Marker } from 'react-mapbox-gl';
+import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import { FaTimes } from 'react-icons/fa';
 
 import mapIcon from '../../assets/images/mapIcon.png';

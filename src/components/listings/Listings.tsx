@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import _ from 'lodash';
 import styled from 'styled-components';
 import { FaMapMarkerAlt, FaRegCalendarAlt, FaUsers, FaUserAlt } from 'react-icons/fa';
+import ReactTooltip from 'react-tooltip';
 
 import testimg from '../../assets/images/testimg.jpg';
 import { ItemDivider } from '../globalUI/GlobalUI';
@@ -128,6 +130,21 @@ const ListingButton = styled.button`
     }
 `;
 
+// TODO: Remove later
+const AttendButton = styled.button`
+    padding: 7px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 8px;
+    color: ${({ theme }) => theme.white};
+    background-color: #ffab2e;
+
+    &:hover {
+        padding: 7px 22px;
+        opacity: 0.8;
+    }
+`;
+
 interface AppProps {
     point?: Point;
 }
@@ -142,13 +159,52 @@ function handleClick(eventID: number) {
         .catch((err) => console.log(err));
 }
 
+function handleCancel(eventID) {
+    cleanearth
+        .delete(`/leaveEvent/${eventID}`)
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+function handleAttendCheck(eventInfo: object, user_id: number) {
+    let attending = false;
+    // @ts-ignore
+    const attend_button = eventInfo.members.map((member, i) => {
+        if (member.id === user_id) {
+            attending = true;
+        }
+    });
+    console.log(eventInfo);
+
+    if (attending) {
+        return (
+            // @ts-ignore
+            <AttendButton onClick={() => handleCancel(eventInfo.id)}>
+                <ReactTooltip />
+                <span data-tip='Click to cancel' data-place='right'>
+                    Attending
+                </span>
+            </AttendButton>
+        );
+    }
+
+    return (
+        // @ts-ignore
+        <ListingButton onClick={() => handleClick(eventInfo.id)}>Attend</ListingButton>
+    );
+}
+
 function ListingTest(): JSX.Element[] {
     const clean_events = useSelector((state: StoreState) => state.eventReducer.events);
-    const user_profile = useSelector(
+    const user_profile_id = useSelector(
         // @ts-ignore
         (state: StoreState) => state.authReducer.user_cleanearth.id
     );
-    console.log('userid', user_profile);
+    console.log('userid', user_profile_id);
 
     const event_listings = clean_events.map((event, i) => {
         return (
@@ -187,15 +243,7 @@ function ListingTest(): JSX.Element[] {
                         </p>
                     </div>
                     <ItemDivider />
-                    {user_profile === event.leader.id ? (
-                        <ListingButton style={{ backgroundColor: '#f2a839' }}>
-                            Attending
-                        </ListingButton>
-                    ) : (
-                        <ListingButton onClick={() => handleClick(event.id)}>
-                            Attend
-                        </ListingButton>
-                    )}
+                    {handleAttendCheck(event, user_profile_id)}
                 </ListingDetails>
             </ListingCard>
         );
