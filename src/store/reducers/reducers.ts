@@ -5,21 +5,21 @@ import storage from 'redux-persist/lib/storage';
 
 // AUTH
 import { authReducer } from './reducerAuth';
-import { AuthUserModel } from '../interfaces/interfaceAuth';
+import { AuthUserState } from '../interfaces/interfaceAuth';
 
 // EVENTS
 import { eventReducer } from './reducerEvent';
 import { EventsAllState } from '../interfaces/interfaceEvent';
 
 export interface StoreState {
-    authReducer: AuthUserModel;
+    authReducer: AuthUserState;
     eventReducer: EventsAllState;
 }
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: [],
+    whitelist: ['authReducer'],
 };
 
 const rootReducer = combineReducers<StoreState>({

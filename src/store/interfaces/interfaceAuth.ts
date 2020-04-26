@@ -1,6 +1,6 @@
 import { AuthTypes } from '../types/typesAuth';
 
-export interface AuthUserModel {
+export interface AuthUserState {
     readonly user: object;
     readonly loading: boolean;
     readonly errors: object;

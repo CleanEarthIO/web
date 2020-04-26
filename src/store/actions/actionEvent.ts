@@ -25,8 +25,7 @@ export const fetchAllEvents = () => (dispatch: any) => {
     cleanearth
         .get('/events/')
         .then((res) => {
-            console.log(res);
-            // dispatch(eventsAll(res.data))
+            dispatch(eventsAll(res.data));
         })
         .catch((err) => {
             dispatch(eventFail(err));

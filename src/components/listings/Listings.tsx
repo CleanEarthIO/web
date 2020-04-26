@@ -38,14 +38,6 @@ const ListingThumbnail = styled.img`
     object-fit: cover;
 `;
 
-const SmlVerDivider = styled.div`
-    height: 23px;
-    width: 1px;
-    background-color: ${({ theme }) => theme.gray300};
-    align-self: center;
-    margin: 6px 10px;
-`;
-
 const ListingDetails = styled.div`
     min-height: 130px;
     margin: ${({ tOff }: StyleProps) => (tOff ? '0px' : '-40px 15px')};

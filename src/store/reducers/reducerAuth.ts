@@ -1,15 +1,15 @@
 import { AuthActions, AuthTypes } from '../types/typesAuth';
-import { AuthUserModel } from '../interfaces/interfaceAuth';
+import { AuthUserState } from '../interfaces/interfaceAuth';
 import { updateObject } from '../../utils/updateObject';
 
-export const INIT_STATE: AuthUserModel = {
+export const INIT_STATE: AuthUserState = {
     user: {},
     loading: false,
     errors: {},
     isAuthenticated: false,
 };
 
-const authSuccess = (state: AuthUserModel, action: AuthActions) =>
+const authSuccess = (state: AuthUserState, action: AuthActions) =>
     updateObject(state, {
         user: action.payload,
         errors: {},
@@ -17,10 +17,10 @@ const authSuccess = (state: AuthUserModel, action: AuthActions) =>
         isAuthenticated: true,
     });
 
-const authLogout = (state: AuthUserModel) =>
+const authLogout = (state: AuthUserState) =>
     updateObject(state, { user: {}, errors: {}, loading: false, isAuthenticated: false });
 
-export function authReducer(state = INIT_STATE, action: AuthActions): AuthUserModel {
+export function authReducer(state = INIT_STATE, action: AuthActions): AuthUserState {
     switch (action.type) {
         case AuthTypes.AUTH_SUCCESS:
             return authSuccess(state, action);

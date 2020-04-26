@@ -140,10 +140,7 @@ export function AccountDropdown({ user_profile }: AppProps): JSX.Element {
         <ProfileContainer ref={node}>
             <UserDropdown onClick={() => setProfileDropdown(!profileDropdown)}>
                 <UserProfileBtn>
-                    {/*
                     <UserProfileText>{user_profile.given_name}</UserProfileText>
-                     */}
-                    <UserProfileText>Name</UserProfileText>
                     <DropdownIcon arrowactive={profileDropdown ? 1 : 0} />
                 </UserProfileBtn>
             </UserDropdown>

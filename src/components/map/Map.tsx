@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
@@ -58,7 +58,13 @@ const PopupClose = styled.button`
 export function Map(): JSX.Element {
     const dispatch = useDispatch();
 
-    useEffect(() => {}, []);
+    const fetchEvents = useCallback(() => {
+        dispatch(fetchAllEvents());
+    }, [dispatch]);
+
+    useEffect(() => {
+        fetchEvents();
+    }, [fetchEvents]);
 
     const [displayPopup, setDisplay] = useState({
         display: false,

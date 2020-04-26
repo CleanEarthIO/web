@@ -15,6 +15,14 @@ export const NotSupContainer = styled.div`
     }
 `;
 
+export const SmlVerDivider = styled.div`
+    height: 23px;
+    width: 1px;
+    background-color: ${({ theme }) => theme.gray300};
+    align-self: center;
+    margin: 6px 10px;
+`;
+
 const NotSupBG = styled.div`
     display: flex;
     height: 52px;
