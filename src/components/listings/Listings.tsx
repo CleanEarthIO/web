@@ -306,7 +306,7 @@ function handleTrash(trash: Trash, user_token: string) {
             {
                 latitude: trash.latitude,
                 longitude: trash.longitude,
-                date: new Date(Date.now() + 6.04e8 * 2),
+                date: '2020-05-30 03:54',
             },
             CONFIG
         )
