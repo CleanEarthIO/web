@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import styled from 'styled-components';
@@ -307,17 +307,26 @@ export const TabButton = styled.button`
     }
 `;
 
+function Test(): JSX.Element {
+    return <>{ListingTest()}</>;
+}
+
 export function Listings(): JSX.Element {
+    const [displayList, setDisplay] = useState(true);
+
+    console.log(displayList);
     return (
         <>
             <TabContainer>
                 <h1>Discover Cleanups</h1>
                 <div>
-                    <TabButton>All listings</TabButton>
-                    <TabButton>Your listings</TabButton>
+                    <TabButton onClick={() => setDisplay(true)}>All listings</TabButton>
+                    <TabButton onClick={() => setDisplay(false)}>Your listings</TabButton>
                 </div>
             </TabContainer>
-            <ListingContainer>{ListingTest()}</ListingContainer>
+            <ListingContainer>
+                {displayList ? <Test /> : <h1>Coming Soon</h1>}
+            </ListingContainer>
         </>
     );
 }
