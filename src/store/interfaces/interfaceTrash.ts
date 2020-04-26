@@ -6,10 +6,17 @@ export interface TrashModel {
     readonly latitude: number;
     readonly longitude: number;
     readonly trash_type: null;
+    readonly country: string;
+    readonly city: string;
+    readonly state: string;
+    readonly road: string;
+    readonly postcode: string;
+    readonly state_code: string;
+    readonly country_code: string;
 }
 
 export interface TrashState {
-    readonly trash: TrashState[];
+    readonly trash: TrashModel[];
     readonly loading: boolean;
     readonly errors: object;
 }

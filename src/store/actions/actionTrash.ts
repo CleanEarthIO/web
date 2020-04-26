@@ -1,5 +1,5 @@
 import { TrashTypes } from '../types/typesTrash';
-import { TrashGetAction } from '../interfaces/interfaceTrash';
+import { TrashGetAction, TrashModel } from '../interfaces/interfaceTrash';
 import cleanearth from '../../apis/cleanearth';
 
 export function trashGet(data): TrashGetAction {
@@ -8,12 +8,12 @@ export function trashGet(data): TrashGetAction {
 
 export const fetchTrash = () => (dispatch: any) => {
     cleanearth
-        .get('/trashAll')
+        .get('/trashAll/')
         .then((res) => {
+            dispatch(trashGet(res.data));
             console.log(res);
         })
         .catch((err) => {
             console.log(err);
         });
 };
-

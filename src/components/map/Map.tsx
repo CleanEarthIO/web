@@ -9,8 +9,9 @@ import mapIcon from '../../assets/images/mapIcon.png';
 import dumpsterIcon from '../../assets/images/dumpster-solid.png';
 import pinIcon from '../../assets/images/map-pin-solid.png';
 import { device } from '../../utils/theme';
-import { SingleListing } from '../listings/Listings';
-import { fetchAllEvents, fetchUserEvents } from '../../store/actions/actionEvent';
+import { SingleListing, TrashListing } from '../listings/Listings';
+import { fetchAllEvents } from '../../store/actions/actionEvent';
+import { fetchTrash } from '../../store/actions/actionTrash';
 import { StoreState } from '../../store/reducers/reducers';
 
 const MapContainer = styled.div`
@@ -61,12 +62,23 @@ interface Member {
     points: number;
 }
 
-export interface Point {
+export interface Event {
     id: number;
     coords: number[];
     date: string;
     leader: Member;
     members: Member[];
+    city: string;
+    state: string;
+    road: string;
+}
+
+export interface Trash {
+    id: number;
+    image: string;
+    latitude: number;
+    longitude: number;
+    trash_type: any;
     city: string;
     state: string;
     road: string;
@@ -80,8 +92,8 @@ export function Map(): JSX.Element {
         enabled: false,
     });
 
-    const events = useSelector((state: StoreState) => state.eventReducer.events);
-    const user_events = useSelector((state: StoreState) => state.eventReducer.userEvents);
+    const eventsState = useSelector((state: StoreState) => state.eventReducer.events);
+    const trashState = useSelector((state: StoreState) => state.trashReducer.trash);
 
     const fetchEvents = useCallback(() => {
         dispatch(fetchAllEvents());
@@ -91,9 +103,16 @@ export function Map(): JSX.Element {
     //     dispatch(fetchUserEvents());
     // }, []);
 
+    const fetchAllTrash = useCallback(() => {
+        dispatch(fetchTrash());
+    }, [dispatch]);
+
     useEffect(() => {
-        if (_.isEmpty(events)) {
+        if (_.isEmpty(eventsState)) {
             fetchEvents();
+        }
+        if (_.isEmpty(trashState)) {
+            fetchAllTrash();
         }
 
         dispatch(fetchUserEvents());
@@ -108,9 +127,9 @@ export function Map(): JSX.Element {
     }, []);
 
     useEffect(() => {
-        let points: Point[] = [];
-        events.map((ev) => {
-            let p: Point = {
+        let events: Event[] = [];
+        eventsState.map((ev) => {
+            let p: Event = {
                 id: ev.id,
                 coords: [ev.longitude, ev.latitude],
                 date: ev.date,
@@ -122,28 +141,49 @@ export function Map(): JSX.Element {
                 state: ev.state,
                 state_code: ev.state_code,
             };
-            points.push(p);
+            events.push(p);
+        });
+        let trash: Trash[] = [];
+        console.log('ts', trashState);
+        // @ts-ignore
+        trashState.map((tr) => {
+            console.log('tr', tr);
+            let t: Trash = {
+                id: tr.id,
+                image: tr.image,
+                latitude: tr.latitude,
+                longitude: tr.longitude,
+                trash_type: tr.trash_type,
+                city: tr.city,
+                state: tr.state,
+                road: tr.road,
+            };
+            trash.push(t);
         });
         setMapSettings({
-            points: points,
+            events: events,
+            trash: trash,
             zoom: [10],
             center: [-98.491142, 29.424349],
         });
-    }, [events, userLoc]);
+    }, [eventsState, trashState, userLoc]);
 
     const [displayPopup, setDisplay] = useState({
         display: false,
-        point: {} as Point,
+        event: {} as Event,
+        trash: {} as Trash,
+        type: '',
     });
 
     // TODO: Ask for location and put the coords in
     const [mapSettings, setMapSettings] = useState({
-        points: [] as Point[],
+        events: [] as Event[],
+        trash: [] as Trash[],
         zoom: [0],
         center: [-98.491142, 29.424349],
     });
 
-    const { points, zoom, center } = mapSettings;
+    const { events, trash, zoom, center } = mapSettings;
     const eventIcon = new Image(20, 30);
     eventIcon.src = mapIcon;
     const dumpster = new Image(20, 20);
@@ -163,15 +203,43 @@ export function Map(): JSX.Element {
             <Mapbox style='mapbox://styles/mapbox/light-v10' zoom={zoom} center={center}>
                 <Layer
                     type='symbol'
-                    id='points'
+                    id='events'
                     layout={{ 'icon-image': 'eventIcon', 'icon-allow-overlap': true }}
                     images={images}
                 >
-                    {points.map((point, i) => (
+                    {events.map((event, i) => (
                         <Feature
                             key={i}
-                            coordinates={point.coords}
-                            onClick={() => setDisplay({ display: true, point: point })}
+                            coordinates={event.coords}
+                            onClick={() =>
+                                setDisplay({
+                                    display: true,
+                                    event: event,
+                                    trash: {} as Trash,
+                                    type: 'event',
+                                })
+                            }
+                        />
+                    ))}
+                </Layer>
+                <Layer
+                    type='symbol'
+                    id='trash'
+                    layout={{ 'icon-image': 'dumpster', 'icon-allow-overlap': true }}
+                    images={images}
+                >
+                    {trash.map((trash, i) => (
+                        <Feature
+                            key={i}
+                            coordinates={[trash.longitude, trash.latitude]}
+                            onClick={() =>
+                                setDisplay({
+                                    display: true,
+                                    event: {} as Event,
+                                    trash: trash,
+                                    type: 'trash',
+                                })
+                            }
                         />
                     ))}
                 </Layer>
@@ -192,7 +260,14 @@ export function Map(): JSX.Element {
 
                 {displayPopup.display ? (
                     <Popup
-                        coordinates={displayPopup.point.coords}
+                        coordinates={
+                            displayPopup.type === 'event'
+                                ? displayPopup.event.coords
+                                : [
+                                      displayPopup.trash.longitude,
+                                      displayPopup.trash.latitude,
+                                  ]
+                        }
                         offset={{
                             // @ts-ignore
                             'bottom-left': [12, -38],
@@ -205,14 +280,20 @@ export function Map(): JSX.Element {
                                 onClick={() =>
                                     setDisplay({
                                         display: false,
-                                        point: displayPopup.point,
+                                        event: displayPopup.event,
+                                        trash: displayPopup.trash,
+                                        type: displayPopup.type,
                                     })
                                 }
                             >
                                 <FaTimes />
                             </PopupClose>
                         </PopupCloseContainer>
-                        <SingleListing point={displayPopup.point} />
+                        {displayPopup.type === 'event' ? (
+                            <SingleListing event={displayPopup.event} />
+                        ) : (
+                            <TrashListing trash={displayPopup.trash} />
+                        )}
                     </Popup>
                 ) : null}
             </Mapbox>

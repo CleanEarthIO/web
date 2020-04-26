@@ -8,9 +8,10 @@ import ReactTooltip from 'react-tooltip';
 import testimg from '../../assets/images/testimg.jpg';
 import { ItemDivider } from '../globalUI/GlobalUI';
 import { device } from '../../utils/theme';
-import { Point } from '../map/Map';
+import { Event, Trash } from '../map/Map';
 import { StoreState } from '../../store/reducers/reducers';
 import cleanearth from '../../apis/cleanearth';
+import { EventsAllModel } from '../../store/interfaces/interfaceEvent';
 
 interface StyleProps {
     tOff?: boolean;
@@ -146,7 +147,8 @@ const AttendButton = styled.button`
 `;
 
 interface AppProps {
-    point?: Point;
+    event?: Event;
+    trash?: Trash;
 }
 
 function handleClick(eventID: number) {
@@ -169,10 +171,10 @@ function handleCancel(eventID) {
         });
 }
 
-function handleAttendCheck(eventInfo: object, user_id: number) {
+function handleAttendCheck(event, user_id: number) {
     let attending = false;
     // @ts-ignore
-    const attend_button = eventInfo.members.map((member, i) => {
+    const attend_button = event.members.map((member, i) => {
         if (member.id === user_id) {
             attending = true;
         }
@@ -181,7 +183,7 @@ function handleAttendCheck(eventInfo: object, user_id: number) {
     if (attending) {
         return (
             // @ts-ignore
-            <AttendButton onClick={() => handleCancel(eventInfo.id)}>
+            <AttendButton onClick={() => handleCancel(event.id)}>
                 <ReactTooltip />
                 <span data-tip='Click to cancel' data-place='right'>
                     Attending
@@ -190,10 +192,7 @@ function handleAttendCheck(eventInfo: object, user_id: number) {
         );
     }
 
-    return (
-        // @ts-ignore
-        <ListingButton onClick={() => handleClick(eventInfo.id)}>Attend</ListingButton>
-    );
+    return <ListingButton onClick={() => handleClick(event.id)}>Attend</ListingButton>;
 }
 
 function ListingTest(): JSX.Element[] {
@@ -248,39 +247,92 @@ function ListingTest(): JSX.Element[] {
     return event_listings;
 }
 
-export function SingleListing({ point }: AppProps): JSX.Element {
+export function SingleListing({ event }: AppProps): JSX.Element {
+    const user_profile_id = useSelector(
+        // @ts-ignore
+        (state: StoreState) => state.authReducer.user_cleanearth.id
+    );
+
     return (
         <ListingDetails tOff>
-            <h1>{point!.road}</h1>
+            <h1>{event!.road}</h1>
             <ItemDivider />
             <p style={{ justifyContent: 'initial ' }}>
                 <FaMapMarkerAlt />
-                {point!.city}, {point!.state}
+                {event!.city}, {event!.state}
             </p>
             <div>
                 <p style={{ justifyContent: 'initial ' }}>
                     <FaRegCalendarAlt />
                     <span>
                         <ListingSubTitle>Cleanup Date</ListingSubTitle>
-                        {point!.date}
+                        {event!.date}
                     </span>
                 </p>
                 <p style={{ justifyContent: 'initial ' }}>
                     <FaUsers style={{ fontSize: '19px' }} />
                     <span>
                         <ListingSubTitle>Attendees</ListingSubTitle>
-                        {point!.members.length}
+                        {event!.members.length}
                     </span>
                 </p>
                 <p style={{ justifyContent: 'initial ' }}>
                     <FaUserAlt />
                     <span>
-                        <ListingSubTitle>Organized by</ListingSubTitle>
-                        {point!.leader.name}
+                        <ListingSubTitle>Created by</ListingSubTitle>
+                        {event!.leader.name}
                     </span>
                 </p>
             </div>
             <ItemDivider />
+            {/*
+                                // @ts-ignore */}
+            {handleAttendCheck(event as Event, user_profile_id)}
+        </ListingDetails>
+    );
+}
+
+function handleTrash(trash: Trash, user_token: string) {
+    const CONFIG = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user_token}`,
+        },
+    };
+
+    cleanearth
+        .post(
+            '/event',
+            { lat: trash.latitude, lon: trash.longitude, date: new Date() },
+            CONFIG
+        )
+        .then((res) => {
+            console.log('from handleTrash', res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+export function TrashListing({ trash }: AppProps): JSX.Element {
+    const user_token_id = useSelector(
+        (state: StoreState) => state.authReducer.user_token
+    );
+
+    return (
+        <ListingDetails tOff>
+            <h1>{trash!.road}</h1>
+            <ItemDivider />
+            <p style={{ justifyContent: 'initial ' }}>
+                <FaMapMarkerAlt />
+                {trash!.city}, {trash!.state}
+            </p>
+            <ItemDivider />
+            {/*
+            // @ts-ignore */}
+            <ListingButton onClick={() => handleTrash(trash, user_token_id)}>
+                Create Event
+            </ListingButton>
         </ListingDetails>
     );
 }
