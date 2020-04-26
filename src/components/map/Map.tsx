@@ -10,7 +10,7 @@ import dumpsterIcon from '../../assets/images/dumpster-solid.png';
 import pinIcon from '../../assets/images/map-pin-solid.png';
 import { device } from '../../utils/theme';
 import { SingleListing } from '../listings/Listings';
-import { fetchAllEvents } from '../../store/actions/actionEvent';
+import { fetchAllEvents, fetchUserEvents } from '../../store/actions/actionEvent';
 import { StoreState } from '../../store/reducers/reducers';
 
 const MapContainer = styled.div`
@@ -81,15 +81,22 @@ export function Map(): JSX.Element {
     });
 
     const events = useSelector((state: StoreState) => state.eventReducer.events);
+    const user_events = useSelector((state: StoreState) => state.eventReducer.userEvents);
 
     const fetchEvents = useCallback(() => {
         dispatch(fetchAllEvents());
-    }, [dispatch]);
+    }, []);
+
+    // const fetchUserEvents = useCallback(() => {
+    //     dispatch(fetchUserEvents());
+    // }, []);
 
     useEffect(() => {
         if (_.isEmpty(events)) {
             fetchEvents();
         }
+
+        dispatch(fetchUserEvents());
 
         navigator.geolocation.getCurrentPosition((pos) => {
             setUserLoc({

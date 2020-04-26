@@ -150,11 +150,9 @@ interface AppProps {
 }
 
 function handleClick(eventID: number) {
-    console.log(eventID);
     cleanearth
         .post(`/event/${eventID}`)
         .then((res) => {
-            console.log(res);
             window.location.reload(true);
         })
         .catch((err) => console.log(err));
@@ -164,7 +162,6 @@ function handleCancel(eventID) {
     cleanearth
         .delete(`/leaveEvent/${eventID}`)
         .then((res) => {
-            console.log(res);
             window.location.reload(true);
         })
         .catch((err) => {
@@ -180,7 +177,6 @@ function handleAttendCheck(eventInfo: object, user_id: number) {
             attending = true;
         }
     });
-    console.log(eventInfo);
 
     if (attending) {
         return (
@@ -206,7 +202,6 @@ function ListingTest(): JSX.Element[] {
         // @ts-ignore
         (state: StoreState) => state.authReducer.user_cleanearth.id
     );
-    console.log('userid', user_profile_id);
 
     const event_listings = clean_events.map((event, i) => {
         return (
@@ -280,7 +275,7 @@ export function SingleListing({ point }: AppProps): JSX.Element {
                 <p style={{ justifyContent: 'initial ' }}>
                     <FaUserAlt />
                     <span>
-                        <ListingSubTitle>Created by</ListingSubTitle>
+                        <ListingSubTitle>Organized by</ListingSubTitle>
                         {point!.leader.name}
                     </span>
                 </p>
@@ -298,6 +293,7 @@ export const TabButton = styled.button`
     font-size: 16px;
     margin-left: 19px;
     cursor: pointer;
+    background-color: transparent;
     &:hover {
         cursor: pointer;
         opacity: 0.8;
