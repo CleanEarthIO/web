@@ -6,6 +6,8 @@ import ReactMapboxGl, { Layer, Feature, Popup, Marker } from 'react-mapbox-gl';
 import { FaTimes } from 'react-icons/fa';
 
 import mapIcon from '../../assets/images/mapIcon.png';
+import dumpsterIcon from '../../assets/images/dumpster-solid.png';
+import pinIcon from '../../assets/images/map-pin-solid.png';
 import { device } from '../../utils/theme';
 import { SingleListing } from '../listings/Listings';
 import { fetchAllEvents } from '../../store/actions/actionEvent';
@@ -84,8 +86,6 @@ export function Map(): JSX.Element {
 
     const events = useSelector((state: StoreState) => state.eventReducer.events);
 
-    console.log('Events', events);
-
     const fetchEvents = useCallback(() => {
         dispatch(fetchAllEvents());
     }, [dispatch]);
@@ -123,10 +123,10 @@ export function Map(): JSX.Element {
         });
         setMapSettings({
             points: points,
-            zoom: [0],
-            center: [userLoc.longitude, userLoc.latitude],
+            zoom: [10],
+            center: [-98.491142, 29.424349],
         });
-    }, [events]);
+    }, [events, userLoc]);
 
     const [displayPopup, setDisplay] = useState({
         display: false,
@@ -137,13 +137,21 @@ export function Map(): JSX.Element {
     const [mapSettings, setMapSettings] = useState({
         points: [] as Point[],
         zoom: [0],
-        center: [0, 0],
+        center: [-98.491142, 29.424349],
     });
 
     const { points, zoom, center } = mapSettings;
-    const image = new Image(20, 30);
-    image.src = mapIcon;
-    const images = ['myImage', image];
+    const eventIcon = new Image(20, 30);
+    eventIcon.src = mapIcon;
+    const dumpster = new Image(20, 20);
+    dumpster.src = dumpsterIcon;
+    const pin = new Image(10, 20);
+    pin.src = pinIcon;
+    const images = [
+        ['eventIcon', eventIcon],
+        ['dumpster', dumpster],
+        ['pin', pin],
+    ];
 
     return (
         <MapContainer>
@@ -153,7 +161,7 @@ export function Map(): JSX.Element {
                 <Layer
                     type='symbol'
                     id='points'
-                    layout={{ 'icon-image': 'myImage', 'icon-allow-overlap': true }}
+                    layout={{ 'icon-image': 'eventIcon', 'icon-allow-overlap': true }}
                     images={images}
                 >
                     {points.map((point, i) => (
@@ -167,16 +175,15 @@ export function Map(): JSX.Element {
                 {userLoc.enabled ? (
                     <Layer
                         type='symbol'
-                        id='points'
-                        layout={{ 'icon-image': 'myImage', 'icon-allow-overlap': true }}
+                        id='location'
+                        layout={{ 'icon-image': 'pin', 'icon-allow-overlap': true }}
                         images={images}
                     >
                         <Feature
-                            // @ts-ignore
-                            type='symbol'
+                            key={'loc'}
                             coordinates={[userLoc.longitude, userLoc.latitude]}
+                            onClick={() => {}}
                         />
-                        <h1>hello</h1>
                     </Layer>
                 ) : null}
 
