@@ -30,7 +30,7 @@ export const fetchUserEvents = () => (dispatch: any) => {
     cleanearth
         .get('/myEvents')
         .then((res) => {
-            console.log('actionEvetn:', res);
+            dispatch(eventFetchUserEvents(res.data));
         })
         .catch((err) => {
             dispatch(eventFail(err));

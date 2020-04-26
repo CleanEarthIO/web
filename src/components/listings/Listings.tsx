@@ -287,6 +287,13 @@ export function SingleListing({ point }: AppProps): JSX.Element {
 
 export const TabContainer = styled.div`
     display: flex;
+    flex-direction: column;
+    margin: 30px;
+
+    div {
+        margin-top: 15px;
+        margin-bottom: -14px;
+    }
 `;
 
 export const TabButton = styled.button`
@@ -302,13 +309,15 @@ export const TabButton = styled.button`
 
 export function Listings(): JSX.Element {
     return (
-        <ListingContainer>
-            <h1>Discover Cleanups</h1>
+        <>
             <TabContainer>
-                <TabButton>All listings</TabButton>
-                <TabButton>Your listings</TabButton>
+                <h1>Discover Cleanups</h1>
+                <div>
+                    <TabButton>All listings</TabButton>
+                    <TabButton>Your listings</TabButton>
+                </div>
             </TabContainer>
-            {ListingTest()}
-        </ListingContainer>
+            <ListingContainer>{ListingTest()}</ListingContainer>
+        </>
     );
 }
