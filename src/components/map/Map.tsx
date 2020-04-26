@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import { FaTimes } from 'react-icons/fa';
@@ -6,6 +7,7 @@ import { FaTimes } from 'react-icons/fa';
 import mapIcon from '../../assets/images/mapIcon.png';
 import { device } from '../../utils/theme';
 import { SingleListing } from '../listings/Listings';
+import { fetchAllEvents } from '../../store/actions/actionEvent';
 
 const MapContainer = styled.div`
     .mapboxgl-map {
@@ -54,6 +56,12 @@ const PopupClose = styled.button`
 `;
 
 export function Map(): JSX.Element {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchAllEvents());
+    }, []);
+
     const [displayPopup, setDisplay] = useState({
         display: false,
         coords: [0, 0],

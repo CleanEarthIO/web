@@ -68,7 +68,7 @@ export const Auth0Provider = ({
             if (isAuthenticated) {
                 const user = await auth0FromHook.getUser();
                 dispatch(authSuccess(user));
-                console.log(user);
+                console.log('From react-auth0', user);
                 setUser(user);
             }
 

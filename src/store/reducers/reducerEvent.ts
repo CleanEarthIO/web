@@ -8,17 +8,35 @@ export const INIT_STATE: EventsAllState = {
     errors: {},
 };
 
+const eventStart = (state: EventsAllState) =>
+    updateObject(state, {
+        events: [],
+        loading: true,
+        errors: {},
+    });
+
 const eventsAll = (state: EventsAllState, action: EventActions) =>
     updateObject(state, {
-        user: action.payload,
-        errors: {},
+        events: action.payload,
         loading: false,
+        errors: {},
+    });
+
+const eventFail = (state: EventsAllState, action: EventActions) =>
+    updateObject(state, {
+        events: [],
+        loading: false,
+        errors: action.payload,
     });
 
 export function eventReducer(state = INIT_STATE, action: EventActions): EventsAllState {
     switch (action.type) {
+        case EventTypes.EVENT_START:
+            return eventStart(state);
         case EventTypes.EVENTS_ALL:
             return eventsAll(state, action);
+        case EventTypes.EVENT_FAIL:
+            return eventFail(state, action);
         default:
             return state;
     }

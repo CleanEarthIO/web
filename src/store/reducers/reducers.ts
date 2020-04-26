@@ -19,7 +19,7 @@ export interface StoreState {
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['authReducer'],
+    whitelist: [],
 };
 
 const rootReducer = combineReducers<StoreState>({

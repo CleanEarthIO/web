@@ -25,7 +25,17 @@ export interface EventsAllState {
     readonly errors: object;
 }
 
+export interface EventStartAction {
+    type: EventTypes.EVENT_START;
+    payload?: null;
+}
+
 export interface EventsGetAction {
     type: EventTypes.EVENTS_ALL;
     payload: EventsAllModel;
+}
+
+export interface EventFailAction {
+    type: EventTypes.EVENT_FAIL;
+    payload: string;
 }
